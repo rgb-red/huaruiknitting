@@ -110,7 +110,6 @@ class Login extends ADMIN_Controller {
 		);
 		
 		$cap = create_captcha($vals);
-		
 		SESSION_START();
 		$_SESSION["code"] = array();
 		$_SESSION["code"]["word"] = $cap["word"];
