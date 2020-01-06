@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$config["site_path"] = "/www/wwwroot/huaruiknitting/";
+
 $config["cn"] = [
     // 头部变量
     "site_name" => "博罗县华瑞针织实业有限公司",
