@@ -111,10 +111,26 @@
                             </dl>
                         </li>
                         <li data-name="product" class="layui-nav-item">
-                            <a href="javascript:;" lay-href="/admin/product" lay-tips="产品管理" lay-direction="2">
-                                <i class="layui-icon layui-icon-auz"></i>
+                            <a href="javascript:;" lay-tips="产品管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-auz"></i>
                                 <cite>产品管理</cite>
+                                <span class="layui-nav-more"></span>
                             </a>
+                            <dl class="layui-nav-child">
+                                <dd data-name="edit_product">
+                                    <a lay-href="/admin/edit_product">发布产品</a>
+                                </dd>
+                            </dl>
+                            <dl class="layui-nav-child">
+                                <dd data-name="product_list">
+                                    <a lay-href="/admin/product_list">产品列表</a>
+                                </dd>
+                            </dl>
+                            <dl class="layui-nav-child">
+                                <dd data-name="product_classify">
+                                    <a lay-href="/admin/product_classify">分类管理</a>
+                                </dd>
+                            </dl>
                         </li>
                         <li data-name="news" class="layui-nav-item">
                             <a href="javascript:;" lay-href="/admin/news" lay-tips="新闻管理" lay-direction="2">

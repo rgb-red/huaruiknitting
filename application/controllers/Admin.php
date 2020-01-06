@@ -84,8 +84,21 @@ class Admin extends ADMIN_Controller {
 	}
 
 	//产品管理
-	public function product(){
-		echo "product";
+	public function edit_product(){
+		$this->load->view("admin/edit_product");
+	}
+
+	//产品分类管理
+	public function product_classify(){
+		$sql = "SELECT * FROM product_classify ORDER BY id ASC";
+		$data["list"] = $this->db->query($sql)->result_array();
+
+		$this->load->view("admin/product_classify", $data);
+	}
+
+	//产品分类编辑
+	public function product_classify_item(){
+		$this->load->view("admin/product_classify_item");
 	}
 
 	//新闻管理
