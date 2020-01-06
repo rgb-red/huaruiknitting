@@ -29,12 +29,21 @@ class Admin extends ADMIN_Controller {
 
 	//站点信息管理
 	public function info(){
-		$this->load->view("admin/info");
+		$lan = $this->input->get("lan");
+
+		$data["lan"] = 0;
+		$data["info"] = $this->SITE;
+		if($lan && $lan == 1){
+			$data["lan"] = 1;
+			$data["info"] = $this->EN_SITE;
+		}
+
+		$this->load->view("admin/info", $data);
 	}
 
 	//首页轮播图
 	public function slide(){
-		echo "slide";
+		$this->load->view("admin/slide");
 	}
 
 	//首页产品展示
