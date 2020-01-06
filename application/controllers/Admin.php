@@ -43,7 +43,9 @@ class Admin extends ADMIN_Controller {
 
 	//首页轮播图
 	public function slide(){
-		$this->load->view("admin/slide");
+		$sql = "SELECT * FROM slide ORDER BY sort ASC";
+		$data["slide"] = $this->db->query($sql)->result_array();
+		$this->load->view("admin/slide", $data);
 	}
 
 	//首页产品展示

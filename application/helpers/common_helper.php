@@ -46,7 +46,15 @@ function check_email($email)
    }
  
    return $valid;
- 
+}
+
+//验证是否纯数字
+function check_all_num($num){
+	if(preg_match("/^[0-9]*$/", $num)){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
 }
 
 //生成随机秘钥
