@@ -27,22 +27,22 @@
                         <thead>
                             <tr>
                                 <th>编号</th>
-                                <th>分类英文名</th>
-                                <th>分类中文名</th>
+                                <th>分类名（中文）</th>
+                                <th>分类名（英文）</th>
                                 <th>排序（数字越大，排序越靠后）</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach($list as $v):?>
-                            <tr>
+                            <tr class="product_classify_item" data-id="<?=$v["id"]?>">
                                 <td><?=$v["id"]?></td>
+                                <td class="classify_title"><?=$v["name"]?></td>
                                 <td><?=$v["title"]?></td>
-                                <td><?=$v["name"]?></td>
                                 <td><?=$v["sort"]?></td>
                                 <td>
                                     <div class="layui-table-cell laytable-cell-2-0-3">
-                                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
+                                        <a class="layui-btn layui-btn-normal layui-btn-xs edit-item" lay-event="edit">
                                             <i class="layui-icon layui-icon-edit"></i>
                                             编辑
                                         </a>
@@ -61,16 +61,22 @@
 		</div>
 	</div>
 </div>
-<script src="../../../layuiadmin/layui/layui.js"></script>
-<script>
-  layui.config({
-    base: '../../../layuiadmin/' //静态资源所在路径
-  }).extend({
-    index: 'lib/index' //主入口模块
-  }).use(['index']);
-  </script>
-<style id="LAY_layadmin_theme">
-.layui-side-menu,.layadmin-pagetabs .layui-tab-title li:after,.layadmin-pagetabs .layui-tab-title li.layui-this:after,.layui-layer-admin .layui-layer-title,.layadmin-side-shrink .layui-side-menu .layui-nav>.layui-nav-item>.layui-nav-child{background-color:#20222A !important;}.layui-nav-tree .layui-this,.layui-nav-tree .layui-this>a,.layui-nav-tree .layui-nav-child dd.layui-this,.layui-nav-tree .layui-nav-child dd.layui-this a{background-color:#009688 !important;}.layui-layout-admin .layui-logo{background-color:#20222A !important;}
-</style>
 </body>
+<script src="/js/jquery.min.js"></script>
+<script src="/layui/js/modules/layer.js"></script>
+<script>
+$(".edit-item").click(function(){
+    var id = $(this).parents(".product_classify_item").attr("data-id")
+    var title = $(this).parents(".product_classify_item").children(".classify_title").text()
+
+    layer.open({
+        type: 2,
+        title: title,
+        shadeClose: true,
+        shade: 0.8,
+        area: ['450px', '90%'],
+        content: '/admin/product_classify_item?id=' + id //iframe的url
+    });     
+});
+</script>
 </html>
