@@ -85,7 +85,8 @@ class Admin extends ADMIN_Controller {
 
 	//产品管理
 	public function edit_product(){
-		$this->load->view("admin/edit_product");
+		$data["id"] = "";
+		$this->load->view("admin/edit_product", $data);
 	}
 
 	//产品分类管理
@@ -103,6 +104,12 @@ class Admin extends ADMIN_Controller {
 		$sql = "SELECT * FROM product_classify WHERE id={$id}";
 		$data = $this->db->query($sql)->row_array();
 
+		$this->load->view("admin/product_classify_item", $data);
+	}
+
+	//产品分类添加
+	public function product_classify_add(){
+		$data["id"] = "";
 		$this->load->view("admin/product_classify_item", $data);
 	}
 

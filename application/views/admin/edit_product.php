@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/layui/css/admin.css" media="all">
 	<script>
-		var ID = "";
+		var ID = "<?=$id?>";
 	</script>
 </head>
 <body>
@@ -18,105 +18,42 @@
 			<div class="layui-col-md12">
 				<div class="layui-card">
 					<div class="layui-card-header">
-						站点基本信息
-						<?php if($lan == 0):?>
-						<button class="layui-btn layui-btn-xs layui-btn-normal" onclick="location.href='/admin/info?lan=1'">中文</button>
+						<?php if($id):?>
+						编辑产品 编号：<?=$id?>
 						<?php else:?>
-							<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="location.href='/admin/info'">ENGLISH</button>
+						发布产品
 						<?php endif;?>
 					</div>
 					<div class="layui-card-body">
 						<div class="layui-form">
-							<div class="layui-form-item">
-								<label class="layui-form-label">LOGO</label>
-								<div class="layui-input-block">
-									<img src="<?=$info["front_url"]?>/images/logo.png">
-									<button class="layui-btn logo-upload-btn">更改</button>
-									<input class="logo-choose" type="file" accept=".png" style="display:none">
-								</div>
-							</div>
-							<form class="info_form" action="/ajax/set_info" method="POST">
+							<form class="layui-form" action="" method="POST">
 								<div class="layui-form-item">
-									<label class="layui-form-label">网站名称</label>
+									<label class="layui-form-label">产品名</label>
 									<div class="layui-input-inline">
-										<input type="text" name="sitename" value="<?=$info["sitename"]?>" class="layui-input">
+										<input type="text" name="title" value="" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">网站域名</label>
+									<label class="layui-form-label">型号</label>
 									<div class="layui-input-inline">
-										<input type="text" name="front_url" lay-verify="url" value="<?=$info["front_url"]?>" class="layui-input">
-									</div>
-									<div class="layui-form-mid layui-word-aux">网站URL地址，以http://或https://开头，结尾不要带'/'</div>
-								</div>
-								<div class="layui-form-item layui-form-text">
-									<label class="layui-form-label">META关键词</label>
-									<div class="layui-input-inline">
-										<textarea name="keywords" class="layui-textarea"><?=$info["keywords"]?></textarea>
-									</div>
-									<div class="layui-form-mid layui-word-aux">多个关键词用英文状态 , 号分割</div>
-								</div>
-								<div class="layui-form-item layui-form-text">
-									<label class="layui-form-label">META描述</label>
-									<div class="layui-input-inline">
-										<textarea name="description" class="layui-textarea"><?=$info["description"]?></textarea>
+										<input type="text" name="number" value="" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">固话</label>
+									<label class="layui-form-label">分类</label>
 									<div class="layui-input-inline">
-										<input type="text" name="tel" value="<?=$info["tel"]?>" class="layui-input">
+									<div class="layui-input-block">
+										<select name="city" lay-verify="required">
+											<option value=""></option>
+											<option value="0">北京</option>
+											<option value="1">上海</option>
+											<option value="2">广州</option>
+											<option value="3">深圳</option>
+											<option value="4">杭州</option>
+										</select>
 									</div>
 								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">传真</label>
-									<div class="layui-input-inline">
-										<input type="text" name="fax" value="<?=$info["fax"]?>" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">邮箱</label>
-									<div class="layui-input-inline">
-										<input type="text" name="email" value="<?=$info["email"]?>" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">手机</label>
-									<div class="layui-input-inline">
-										<input type="text" name="phone" value="<?=$info["phone"]?>" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">联系人</label>
-									<div class="layui-input-inline">
-										<input type="text" name="linkman" value="<?=$info["linkman"]?>" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">经纬度</label>
-									<div class="layui-input-inline">
-										<input type="text" name="point" value="<?=$info["point"]?>" class="layui-input">
-									</div>
-									<div class="layui-form-mid layui-word-aux">用于地图定位，请百度地图查询经纬度</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">地址</label>
-									<div class="layui-input-inline">
-										<textarea name="addr" class="layui-textarea"><?=$info["addr"]?></textarea>
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">备案号</label>
-									<div class="layui-input-inline">
-										<input type="text" name="site_record" value="<?=$info["site_record"]?>" class="layui-input">
-									</div>
-								</div>
-								<div class="layui-form-item">
-									<label class="layui-form-label">工商注册号</label>
-									<div class="layui-input-inline">
-										<input type="text" name="company_info" value="<?=$info["company_info"]?>" class="layui-input">
-									</div>
-								</div>
+								
 								<div class="layui-form-item">
 									<div class="layui-input-block">
 										<button type="button" class="layui-btn submit-btn">确认保存</button>
@@ -132,91 +69,5 @@
 </body>
 <script src="/js/jquery.min.js"></script>
 <script src="/layui/js/modules/layer.js"></script>
-<script>
-	var choose_logo_layer;
-	//选择logo按钮
-	$(".logo-upload-btn").click(function(){
-		choose_logo_layer = layer.confirm('选择图片后立即生效，确定要更换？', {
-			title: "提示",
-			btn: ['确定','取消'] //按钮
-		},function(){
-			$(".logo-choose").click();
-		});
-	});
-
-	//上传logo事件
-	$(".logo-choose").change(function(){
-		layer.close(choose_logo_layer);
-		var load_layer = layer.load(2);
-
-		var data = new FormData();
-		logo = $(this)[0].files[0];
-		data.append("logo", logo);
-
-		$.ajax({
-			method: "POST",
-			url: "/ajax/upload_logo",
-			processData: false,
-			contentType: false,
-			data:data,
-			success: function(data){
-				if(data == 1){
-					success_tip()
-				}else{
-					error_tip("修改失败，请刷新后重试", load_layer)
-				}
-			},
-			error: function(){
-				error_tip("系统错误，请刷新后重试", load_layer)
-			}
-		});
-	});
-
-	//修改基本信息
-	$(".submit-btn").click(function(){
-		layer.confirm("请确认修改信息是否正确！", {
-			title: "提示",
-			btn: ['确定','取消'] //按钮
-		},function(){
-			var load_layer = layer.load(2);
-
-			var formData = {};
-			var t = $('.info_form').serializeArray();
-			$.each(t, function() {
-				formData[this.name] = this.value;
-			});
-			data = JSON.stringify(formData);
-
-			$.ajax({
-				method: "POST",
-				url: "/ajax/set_info",
-				data:{data: data, lan: LAN},
-				success: function(data){
-					if(data == 1){
-						success_tip()
-					}else{
-						error_tip("修改失败，请刷新后重试", load_layer)
-					}
-				},
-				error: function(){
-					error_tip("系统错误，请刷新后重试", load_layer)
-				}
-			});
-			
-		});
-	});
-
-	function success_tip(){
-		layer.alert('修改成功', function(){
-			window.location.reload()
-		});
-	}
-
-	function error_tip(msg, elem){
-		layer.close(elem)
-		layer.alert(msg, function(index){
-			layer.close(index);
-		});
-	}
-</script>
+<script src="/layui/js/modules/form.js"></script>
 </html>

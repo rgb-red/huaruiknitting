@@ -14,7 +14,10 @@
 	<div class="layui-row layui-col-space15">
 		<div class="layui-col-md12">
 			<div class="layui-card">
-				<div class="layui-card-header">产品分类管理</div>
+				<div class="layui-card-header">
+                    产品分类管理
+                    <button class="layui-btn layui-btn-xs layui-btn-normal add-item">新增分类</button>
+                </div>
 				<div class="layui-card-body">
 					<table class="layui-table">
                         <colgroup>
@@ -46,7 +49,7 @@
                                             <i class="layui-icon layui-icon-edit"></i>
                                             编辑
                                         </a>
-                                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
+                                        <a class="layui-btn layui-btn-danger layui-btn-xs del-item" lay-event="del">
                                             <i class="layui-icon layui-icon-delete"></i>
                                             删除
                                         </a>
@@ -71,12 +74,59 @@ $(".edit-item").click(function(){
 
     layer.open({
         type: 2,
-        title: title,
+        title: "修改",
         shadeClose: true,
         shade: 0.8,
-        area: ['450px', '90%'],
-        content: '/admin/product_classify_item?id=' + id //iframe的url
+        area: ['450px', '350PX'],
+        content: '/admin/product_classify_item?id=' + id
     });     
 });
+
+$(".del-item").click(function(){
+    var id = $(this).parents(".product_classify_item").attr("data-id")
+    layer.confirm("删除后无法撤回，是否确认删除？", {
+        title: "提示",
+        btn: ['确定','取消'] //按钮
+    },function(){
+        $.ajax({
+            method: "POST",
+            url: "/ajax/del_product_classity",
+            data:{id:id},
+            success: function(data){
+                if(data == 1){
+                    success_tip()
+                }else{
+                    error_tip("删除失败，请刷新后重试")
+                }
+            },
+            error: function(){
+                error_tip("系统错误，请刷新后重试")
+            }
+        });
+    });
+});
+
+$(".add-item").click(function(){
+    layer.open({
+        type: 2,
+        title: "修改",
+        shadeClose: true,
+        shade: 0.8,
+        area: ['450px', '350PX'],
+        content: '/admin/product_classify_add'
+    });
+});
+
+function success_tip(){
+	layer.alert('删除成功', function(){
+		window.location.reload();
+	});
+}
+
+function error_tip(msg){
+	layer.alert(msg, function(index){
+		layer.close(index)
+	});
+}
 </script>
 </html>

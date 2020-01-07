@@ -96,3 +96,19 @@ function alert_go($msg){
 function pwdEncrypt($pwd, $salt){
 	return md5(md5($pwd) . md5($salt) . "!$54^23!2435*9~");
 }
+
+//sql update选项拼接
+function sql_update_merge_item($data){
+	$item = "";
+	$index = 0;
+	foreach($data as $k => $v){
+		if($index == 0){
+			$index = 1;
+			$item .= "`" . $k . "`" . "='".$v."'";
+		}else{
+			$item .= ",`" . $k . "`" . "='".$v."'";
+		}
+	}
+
+	return $item;
+}
