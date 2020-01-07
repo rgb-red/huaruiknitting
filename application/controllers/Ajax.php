@@ -163,7 +163,7 @@ class Ajax extends CI_Controller {
         $title = $this->input->post("title");
         $sort = $this->input->post("sort");
         
-        $sql = "INSERT INTO product_classify (`title`, `name`, `sort`) VALUES ('{$name}','{$title}','{$sort}')";
+        $sql = "INSERT INTO product_classify (`title`, `name`, `sort`) VALUES ('{$title}','{$name}','{$sort}')";
         $query = $this->db->query($sql);
 
         if($query){

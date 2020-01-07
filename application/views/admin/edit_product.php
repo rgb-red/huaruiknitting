@@ -29,34 +29,31 @@
 							<form class="layui-form" action="" method="POST">
 								<div class="layui-form-item">
 									<label class="layui-form-label">产品名</label>
-									<div class="layui-input-inline">
+									<div class="layui-col-md3">
 										<input type="text" name="title" value="" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">型号</label>
-									<div class="layui-input-inline">
+									<div class="layui-col-md3">
 										<input type="text" name="number" value="" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">分类</label>
 									<div class="layui-input-inline">
-									<div class="layui-input-block">
-										<select name="city" lay-verify="required">
+										<select name="product_classify" lay-verify="required">
 											<option value=""></option>
-											<option value="0">北京</option>
-											<option value="1">上海</option>
-											<option value="2">广州</option>
-											<option value="3">深圳</option>
-											<option value="4">杭州</option>
+											<?php foreach($classify as $v):?>
+											<option value="<?=$v["id"]?>"><?=$v["name"]?></option>
+											<?php endforeach;?>
 										</select>
 									</div>
 								</div>
-								
 								<div class="layui-form-item">
-									<div class="layui-input-block">
-										<button type="button" class="layui-btn submit-btn">确认保存</button>
+									<label class="layui-form-label">封面</label>
+									<div class="layui-col-md3">
+										<input type="text" name="number" value="" class="layui-input">
 									</div>
 								</div>
 							</form>
@@ -68,6 +65,12 @@
 	</div>
 </body>
 <script src="/js/jquery.min.js"></script>
+<script src="/layui/js/layui.js"></script>
 <script src="/layui/js/modules/layer.js"></script>
 <script src="/layui/js/modules/form.js"></script>
+<script>
+layui.use('form', function(){
+	var form = layui.form;
+});
+</script>
 </html>

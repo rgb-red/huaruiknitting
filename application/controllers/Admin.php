@@ -86,6 +86,11 @@ class Admin extends ADMIN_Controller {
 	//产品管理
 	public function edit_product(){
 		$data["id"] = "";
+
+		//产品分类
+		$sql = "SELECT id,`name` FROM product_classify ORDER BY id ASC";
+		$data["classify"] = $this->db->query($sql)->result_array();
+
 		$this->load->view("admin/edit_product", $data);
 	}
 
