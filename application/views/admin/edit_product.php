@@ -52,6 +52,13 @@
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">封面</label>
+									<div class="layui-col-md3 product-img">
+										<a href="javascript:;"><img src="/images/addimg.jpg" width="220px"></a>
+									</div>
+									<input class="img-choose" type="file" accept=".jpg" style="display:none">
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">型号</label>
 									<div class="layui-col-md3">
 										<input type="text" name="number" value="" class="layui-input">
 									</div>
@@ -68,9 +75,24 @@
 <script src="/layui/js/layui.js"></script>
 <script src="/layui/js/modules/layer.js"></script>
 <script src="/layui/js/modules/form.js"></script>
+<script src="/js/jquery.imagecompress.js"></script>
 <script>
-layui.use('form', function(){
-	var form = layui.form;
-});
+	layui.use('form', function(){
+		var form = layui.form;
+	});
+
+	//选择图片按钮
+	$(".product-img").click(function(){
+		$(".img-choose").click();
+	});
+
+	//将图片保存为数据流，显示预览图
+	$('.img-choose').imageCompress({
+		'quality': 100,
+		'oncompressEnd': function(result){
+			var imgsrc = result.src;
+			$(".product-img img").attr("src", imgsrc);
+		}
+	});
 </script>
 </html>
