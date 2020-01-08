@@ -184,7 +184,7 @@ class Ajax extends CI_Controller {
         $name_break = explode(".", $images["name"]);
         $tmp =  $name_break[count($name_break) - 1];
         $save_name = date("Y-m-d") . "-" . md5(time() . cteateSalt() . cteateSalt()) . "." . $tmp;
-        $save_path = $this->config->item("site_path") . "webroot/uploads/products/" . $save_name;
+        $save_path = $this->config->item("site_path") . "webroot/uploads/product/" . $save_name;
         
         //保存图片，返回信息
         $img_obj = $images["tmp_name"];
@@ -193,7 +193,7 @@ class Ajax extends CI_Controller {
                 "code" => 0,
                 "msg" => "success",
                 "data" => [
-                    "src" => $front_url . "/uploads/products/" . $save_name,
+                    "src" => $front_url . "/uploads/product/" . $save_name,
                     "title" => "",
                 ],
             ];
@@ -231,8 +231,8 @@ class Ajax extends CI_Controller {
             $save_path = $this->config->item("site_path") . "webroot/uploads/cover/" . $id . "." . $tmp;
             $cover_obj = $cover["tmp_name"];
             if(!move_uploaded_file($cover_obj, $save_path)){
-                $sql = "DELETE FROM product WHERE id={$id}";
-                $this->db->query($sql);
+                echo 0;
+                exit;
             }
             $data["cover"] = 1;
         }
@@ -243,7 +243,7 @@ class Ajax extends CI_Controller {
         $data["classify"] = $this->input->post("product_classify");
         $data["brief"] = $this->input->post("brief");
         $data["text"] = $this->input->post("textarea_html");
-        $data["status"] = 1;
+        $data["status"] = $this->input->post("status");
         $textarea_text = $this->input->post("textarea_text");
 
         //处理简介
@@ -260,10 +260,8 @@ class Ajax extends CI_Controller {
         $sql = "UPDATE product SET {$item} WHERE id={$id}";
         $query = $this->db->query($sql);
         if($query){
-            echo 1;
+            echo $id;
         }else{
-            $sql = "DELETE FROM product WHERE id={$id}";
-            $this->db->query($sql);
             echo 0;
         }
     }

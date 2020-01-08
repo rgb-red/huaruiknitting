@@ -19,7 +19,7 @@
 				<div class="layui-card">
 					<div class="layui-card-header">
 						<?php if($id):?>
-						编辑产品 编号：<?=$id?>
+						编辑产品 （编号：<?=$id?>）
 						<?php else:?>
 						发布产品
 						<?php endif;?>
@@ -30,13 +30,13 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">产品名</label>
 									<div class="layui-col-md3">
-										<input type="text" name="title" value="" class="layui-input title">
+										<input type="text" name="title" value="<?php if($id){echo $info["title"];}?>" class="layui-input title">
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">型号</label>
 									<div class="layui-col-md3">
-										<input type="text" name="number" value="" class="layui-input number">
+										<input type="text" name="number" value="<?php if($id){echo $info["number"];}?>" class="layui-input number">
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -45,7 +45,11 @@
 										<select name="product_classify" lay-verify="required" class="product_classify">
 											<option value=""></option>
 											<?php foreach($classify as $v):?>
+											<?php if($id):?>
+											<option value="<?=$v["id"]?>" selected><?=$v["name"]?></option>
+											<?else:?>
 											<option value="<?=$v["id"]?>"><?=$v["name"]?></option>
+											<?php endif;?>
 											<?php endforeach;?>
 										</select>
 									</div>
@@ -53,20 +57,24 @@
 								<div class="layui-form-item">
 									<label class="layui-form-label">封面</label>
 									<div class="layui-col-md3 product-img">
+										<?php if($id && $info["cover"]):?>
+										<a href="javascript:;"><img src="<?=$front_url . "/uploads/cover/" . $id . ".jpg"?>" width="220px"></a>
+										<?php else:?>
 										<a href="javascript:;"><img src="/images/addimg.jpg" width="220px"></a>
+										<?php endif;?>
 									</div>
 									<input class="img-choose" type="file" accept=".jpg" style="display:none">
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">简介</label>
 									<div class="layui-col-md4">
-										<textarea name="brief" class="layui-textarea brief"></textarea>
+										<textarea name="brief" class="layui-textarea brief"><?php if($id){echo $info["brief"];}?></textarea>
 									</div>
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">详情</label>
 									<div class="layui-col-md9">
-										<textarea id="text" style="display: none;"></textarea>
+										<textarea id="text" style="display: none;"><?php if($id){echo $info["text"];}?></textarea>
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -107,8 +115,6 @@
 		
 	});
 
-	
-
 	//选择图片按钮
 	$(".product-img").click(function(){
 		$(".img-choose").click();
@@ -127,14 +133,15 @@
 	$("#save-btn,#draft-btn").click(function(){
 		if($(this).attr("id") == "save-btn"){
 			msg = "确认发布产品？"
+			status = 1
 		}
 		else if($(this).attr("id") == "draft-btn"){
 			msg = "确认将产品放入草稿箱？"
+			status = 2
 		}
 		
-		var load_layer = layer.load(2)
+		load_layer = layer.load(2)
 
-		var status = 1
 		var title = $(".title").val()
 		var number = $(".number").val()
 		var product_classify = $(".product_classify").val()
@@ -158,24 +165,25 @@
 		data.append("brief", brief);
 		data.append("textarea_html", textarea_html);
 		data.append("textarea_text", textarea_text);
+		data.append("status", status);
 		
-		confirm1(cover, brief, data);
+		alert1(cover, brief, data);
 	});
 
-	function confirm1(cover, brief, data){
-		if(!cover){
-			layer.confirm("未上传产品封面，将使用默认图片作为封面！", function(index){
+	function alert1(cover, brief, data){
+		if(!cover && $(".product-img img").attr("src") == "/images/addimg.jpg"){
+			layer.alert("未上传产品封面，将使用默认图片作为封面！", function(index){
 				layer.close(index);
-				confirm2(brief, data);
+				alert2(brief, data);
 			});
 		}else{
-			confirm2(brief, data);
+			alert2(brief, data);
 		}
 	}
 
-	function confirm2(brief, data){
+	function alert2(brief, data){
 		if(brief == ""){
-			layer.confirm("未填写简介，将根据产品详情生成简介内容！", function(index){
+			layer.alert("未填写简介，将根据产品详情生成简介内容！", function(index){
 				layer.close(index);
 				do_ajax(data);
 			});
@@ -185,19 +193,37 @@
 	}
 
 	function do_ajax(data){
-		$.ajax({
-			method: "POST",
-			url: "/ajax/save_product",
-			processData: false,
-			contentType: false,
-			data:data,
-			success: function(data){
-				alert(data)
-			},
-			error: function(){
-				alert("error")
-			}
+		choose_logo_layer = layer.confirm('请确认产品信息是否正确！', {
+			btn: ['确定','取消'] //按钮
+		},function(){
+			$.ajax({
+				method: "POST",
+				url: "/ajax/save_product",
+				processData: false,
+				contentType: false,
+				data:data,
+				success: function(data){
+					if(data == 0){
+						layer.confirm("产品信息写入失败", function(){
+							window.location.reload()
+						});
+					}else{
+						layer.confirm("产品信息写入成功！", function(){
+							window.location.href = "/admin/edit_product?id=" + data;
+						})
+					}
+				},
+				error: function(){
+					layer.confirm("系统错误，请重新提交", function(index){
+						layer.close(index);
+						layer.close(load_layer);
+					});
+				}
+			});
+		}, function(){
+			layer.close(load_layer);
 		});
+		
 	}
 </script>
 </html>

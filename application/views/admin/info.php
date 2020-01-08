@@ -145,7 +145,6 @@
 	//选择logo按钮
 	$(".logo-upload-btn").click(function(){
 		choose_logo_layer = layer.confirm('选择图片后立即生效，确定要更换？', {
-			title: "提示",
 			btn: ['确定','取消'] //按钮
 		},function(){
 			$(".logo-choose").click();
