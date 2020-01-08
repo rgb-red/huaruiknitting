@@ -133,7 +133,7 @@
     </div>
     <?php $this->load->view("layout/footer")?>
 </body>
-<script src="/layer/layer.js"></script>
+<script src="/layui/js/modules/layer.js"></script>
 <script>
     layer.photos({
         photos: '#layer-photos'
