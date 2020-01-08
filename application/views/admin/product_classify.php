@@ -77,7 +77,7 @@ $(".edit-item").click(function(){
         title: "修改",
         shadeClose: true,
         shade: 0.8,
-        area: ['450px', '350PX'],
+        area: ['450px', '380PX'],
         content: '/admin/product_classify_item?id=' + id
     });     
 });
@@ -112,7 +112,7 @@ $(".add-item").click(function(){
         title: "修改",
         shadeClose: true,
         shade: 0.8,
-        area: ['450px', '350PX'],
+        area: ['450px', '380PX'],
         content: '/admin/product_classify_add'
     });
 });

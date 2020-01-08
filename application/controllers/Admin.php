@@ -95,7 +95,7 @@ class Admin extends ADMIN_Controller {
 		}
 
 		//产品分类
-		$sql = "SELECT id,`name` FROM product_classify ORDER BY id ASC";
+		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
 		$data["classify"] = $this->db->query($sql)->result_array();
 
 		//前段URL

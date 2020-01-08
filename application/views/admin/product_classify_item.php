@@ -44,7 +44,7 @@
 	<?php else:?>
 	<button class="layui-btn add-btn">确认添加</button>
 	<?php endif;?>
-	<button class="layui-btn layui-btn-primary cancel-btn">取消添加</button>
+	<button class="layui-btn layui-btn-primary cancel-btn">取消</button>
 </div>
 </body>
 <script src="/js/jquery.min.js"></script>

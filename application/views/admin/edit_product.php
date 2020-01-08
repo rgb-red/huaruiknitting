@@ -11,6 +11,11 @@
 	<script>
 		var ID = "<?=$id?>";
 	</script>
+	<style>
+		.layui-input-inline{
+			width:25%!important
+		}
+	</style>
 </head>
 <body>
 	<div class="layui-fluid">
@@ -28,27 +33,28 @@
 						<div class="layui-form">
 							<form class="layui-form" action="" method="POST">
 								<div class="layui-form-item">
-									<label class="layui-form-label">产品名</label>
-									<div class="layui-col-md3">
-										<input type="text" name="title" value="<?php if($id){echo $info["title"];}?>" class="layui-input title">
+									<label class="layui-form-label"><span style="color:red">*</span>产品名</label>
+									<div class="layui-col-md10">
+										<input type="text" name="title" value="<?php if($id){echo $info["title"];}?>" class="layui-input-inline layui-input title" placeholder="中文">
+										<input type="text" name="en_title" value="<?php if($id){echo $info["en_title"];}?>" class="layui-input-inline layui-input en_title" placeholder="英文">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">型号</label>
+									<label class="layui-form-label"><span style="color:red">*</span>型号</label>
 									<div class="layui-col-md3">
 										<input type="text" name="number" value="<?php if($id){echo $info["number"];}?>" class="layui-input number">
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">分类</label>
+									<label class="layui-form-label"><span style="color:red">*</span>分类</label>
 									<div class="layui-input-inline">
 										<select name="product_classify" lay-verify="required" class="product_classify">
 											<option value=""></option>
 											<?php foreach($classify as $v):?>
 											<?php if($id):?>
-											<option value="<?=$v["id"]?>" selected><?=$v["name"]?></option>
+											<option value="<?=$v["id"]?>" selected><?=$v["name"]?>(<?=$v["title"]?>)</option>
 											<?else:?>
-											<option value="<?=$v["id"]?>"><?=$v["name"]?></option>
+											<option value="<?=$v["id"]?>"><?=$v["name"]?>(<?=$v["title"]?>)</option>
 											<?php endif;?>
 											<?php endforeach;?>
 										</select>
@@ -67,14 +73,21 @@
 								</div>
 								<div class="layui-form-item">
 									<label class="layui-form-label">简介</label>
-									<div class="layui-col-md4">
-										<textarea name="brief" class="layui-textarea brief"><?php if($id){echo $info["brief"];}?></textarea>
+									<div class="layui-col-md11">
+										<textarea name="brief" class="layui-input-inline layui-textarea brief"><?php if($id){echo $info["brief"];}?></textarea>
+										<textarea name="brief" class="layui-input-inline layui-textarea en_brief"><?php if($id){echo $info["en_brief"];}?></textarea>
 									</div>
 								</div>
 								<div class="layui-form-item">
-									<label class="layui-form-label">详情</label>
+									<label class="layui-form-label">详情(中文)</label>
 									<div class="layui-col-md9">
 										<textarea id="text" style="display: none;"><?php if($id){echo $info["text"];}?></textarea>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<label class="layui-form-label">详情(英文)</label>
+									<div class="layui-col-md9">
+										<textarea id="en_text" style="display: none;"><?php if($id){echo $info["en_text"];}?></textarea>
 									</div>
 								</div>
 								<div class="layui-form-item">
@@ -93,7 +106,7 @@
 </body>
 <script src="/js/jquery.min.js"></script>
 <script src="/layui/js/layui.js"></script>
-<script src="/layui/js/modules/layer.js"></script>
+<script src="/layui/js/modules/layer2.js"></script>
 <script src="/layui/js/modules/form.js"></script>
 <script src="/layui/js/modules/layedit.js"></script>
 <script src="/js/jquery.imagecompress.js"></script>
@@ -109,6 +122,11 @@
 		layedit.set({uploadImage: {url: '/ajax/article_upload_image'}});
 
 		textarea = layedit.build('text', {
+			height: 480,
+			tool: ['strong', 'italic', 'underline', 'del', '|', 'left', 'center', 'right', 'link', 'unlink', 'image']
+		});
+
+		en_textarea = layedit.build('en_text', {
 			height: 480,
 			tool: ['strong', 'italic', 'underline', 'del', '|', 'left', 'center', 'right', 'link', 'unlink', 'image']
 		});
@@ -133,25 +151,31 @@
 	$("#save-btn,#draft-btn").click(function(){
 		if($(this).attr("id") == "save-btn"){
 			msg = "确认发布产品？"
+			msg2 = "发布产品成功！"
 			status = 1
 		}
 		else if($(this).attr("id") == "draft-btn"){
 			msg = "确认将产品放入草稿箱？"
+			msg2 = "成功放入草稿箱！"
 			status = 2
 		}
 		
 		load_layer = layer.load(2)
 
 		var title = $(".title").val()
+		var en_title = $(".en_title").val()
 		var number = $(".number").val()
 		var product_classify = $(".product_classify").val()
 		var cover = $(".img-choose")[0].files[0]
 		var brief = $(".brief").val()
+		var en_brief = $(".en_brief").val()
 		var textarea_html = layedit.getContent(textarea)
+		var en_textarea_html = layedit.getContent(en_textarea)
 		var textarea_text = layedit.getText(textarea)
+		var en_textarea_text = layedit.getText(en_textarea)
 
-		if(!title || !number || !product_classify){
-			layer.msg("产品名，型号，类型为必填项，请勿留空！")
+		if(!title || !number || !product_classify || !en_title){
+			layer.msg("*为必填项，请勿留空！")
 			layer.close(load_layer)
 			return
 		}
@@ -159,30 +183,34 @@
 		var data = new FormData();
 		data.append("id", ID);
 		data.append("title", title);
+		data.append("en_title", en_title);
 		data.append("number", number);
 		data.append("product_classify", product_classify);
 		data.append("cover", cover);
 		data.append("brief", brief);
+		data.append("en_brief", en_brief);
 		data.append("textarea_html", textarea_html);
+		data.append("en_textarea_html", en_textarea_html);
 		data.append("textarea_text", textarea_text);
+		data.append("en_textarea_text", en_textarea_text);
 		data.append("status", status);
-		
-		alert1(cover, brief, data);
+
+		alert1(cover, brief, en_brief, data);
 	});
 
-	function alert1(cover, brief, data){
+	function alert1(cover, brief, en_brief, data){
 		if(!cover && $(".product-img img").attr("src") == "/images/addimg.jpg"){
 			layer.alert("未上传产品封面，将使用默认图片作为封面！", function(index){
 				layer.close(index);
-				alert2(brief, data);
+				alert2(brief, en_brief, data);
 			});
 		}else{
-			alert2(brief, data);
+			alert2(brief, en_brief, data);
 		}
 	}
 
-	function alert2(brief, data){
-		if(brief == ""){
+	function alert2(brief, en_brief, data){
+		if(brief == "" || en_brief == ""){
 			layer.alert("未填写简介，将根据产品详情生成简介内容！", function(index){
 				layer.close(index);
 				do_ajax(data);
@@ -193,7 +221,7 @@
 	}
 
 	function do_ajax(data){
-		choose_logo_layer = layer.confirm('请确认产品信息是否正确！', {
+		choose_logo_layer = layer.confirm(msg, {
 			btn: ['确定','取消'] //按钮
 		},function(){
 			$.ajax({
@@ -204,17 +232,17 @@
 				data:data,
 				success: function(data){
 					if(data == 0){
-						layer.confirm("产品信息写入失败", function(){
+						layer.alert("产品信息写入失败", function(){
 							window.location.reload()
 						});
 					}else{
-						layer.confirm("产品信息写入成功！", function(){
+						layer.alert(msg2, function(){
 							window.location.href = "/admin/edit_product?id=" + data;
 						})
 					}
 				},
 				error: function(){
-					layer.confirm("系统错误，请重新提交", function(index){
+					layer.alert("系统错误，请重新提交", function(index){
 						layer.close(index);
 						layer.close(load_layer);
 					});

@@ -239,12 +239,17 @@ class Ajax extends CI_Controller {
 
         //接受其他参数
         $data["title"] = $this->input->post("title");
+        $data["en_title"] = $this->input->post("en_title");
         $data["number"] = $this->input->post("number");
         $data["classify"] = $this->input->post("product_classify");
         $data["brief"] = $this->input->post("brief");
+        $data["en_brief"] = $this->input->post("en_brief");
         $data["text"] = $this->input->post("textarea_html");
+        $data["en_text"] = $this->input->post("en_textarea_html");
         $data["status"] = $this->input->post("status");
         $textarea_text = $this->input->post("textarea_text");
+        $en_textarea_text = $this->input->post("en_textarea_text");
+        $data["time"] = time();
 
         //处理简介
         if(!$data["brief"]){
@@ -252,6 +257,14 @@ class Ajax extends CI_Controller {
                 $data["brief"] = mb_substr($textarea_text, 0, 25) . "...";
             }else{
                 $data["brief"] = $textarea_text;
+            }
+        }
+
+        if(!$data["en_brief"]){
+            if(mb_strlen($en_textarea_text) >= 50){
+                $data["en_brief"] = mb_substr($en_textarea_text, 0, 50) . "...";
+            }else{
+                $data["en_brief"] = $en_textarea_text;
             }
         }
 
@@ -264,6 +277,38 @@ class Ajax extends CI_Controller {
         }else{
             echo 0;
         }
+    }
+
+    public function product_list(){
+        $data = [
+            "code" => 0,
+            "msg" => "",
+            "count" => 100,
+            "data" => [
+                [
+                    "id" => 10000,
+                    "number" => "aba-123",
+                    "title" => "保暖衣",
+                    "en_title" => "baonuan",
+                    "cover" => "http://h.com/uploads/cover/34.jpg",
+                    "classify" => "保暖衣系列",
+                    "status" => 2,
+                    "time" => date("Y-m-d H:i:s"),
+                ],[
+                    "id" => 10000,
+                    "number" => "aba-123",
+                    "title" => "保暖衣",
+                    "en_title" => "baonuan",
+                    "cover" => "http://h.com/uploads/cover/34.jpg",
+                    "classify" => 8,
+                    "status" => 1,
+                    "time" => date("Y-m-d H:i:s"),
+                ],
+            ]
+        ];
+        
+
+        echo json_encode($data);
     }
 
 
