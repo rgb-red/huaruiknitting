@@ -54,7 +54,7 @@
         <div class="layui-col-md2 layui-col-sm4 add-slide">
             <div class="cmdlist-container">
 				<a href="javascript:;" class="layui-col-lg12 add-img">
-                    <img src="/images/add.jpg" width="100%">
+                    <img src="/images/add.jpg" width="100%" height="100px">
                 </a>
 				<a href="javascript:;">
                     <p style="text-align:center">点击添加图片</p>
