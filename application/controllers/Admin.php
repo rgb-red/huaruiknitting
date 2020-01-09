@@ -50,7 +50,7 @@ class Admin extends ADMIN_Controller {
 
 	//首页关于华瑞
 	public function about(){
-		echo "about";
+		
 	}
 
 	//公司简介
@@ -108,6 +108,7 @@ class Admin extends ADMIN_Controller {
 		$data["info"]["classify"] = $this->input->get("classify") ? $this->input->get("classify") : "";
 		$data["info"]["time"] = $this->input->get("time") ? $this->input->get("time") : "";
 		$data["info"]["status"] = $this->input->get("status") ? $this->input->get("status") : "";
+		$data["info"]["push"] = $this->input->get("push") ? $this->input->get("push") : "";
 		$data["info"]["order"] = $this->input->get("order") ? $this->input->get("order") : "1";
 		$data["info"]["by"] = $this->input->get("by") ? $this->input->get("by") : "1";
 

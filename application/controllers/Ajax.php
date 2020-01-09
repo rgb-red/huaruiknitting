@@ -212,7 +212,7 @@ class Ajax extends CI_Controller {
         $id = $this->input->post("id");
         if(!$id){
             //插入空白行，创建产品ID
-            $sql = "INSERT INTO product (`number`,`title`,`classify`,`hot`,`brief`,`text`,`cover`,`status`) VALUES ('','','','','','',0,0)";
+            $sql = "INSERT INTO product (`number`,`title`,`classify`,`hot`,`brief`,`text`,`cover`,`status`,`push`) VALUES ('','','','','','',0,0,1)";
             $ins = $this->db->query($sql);
             if(!$ins){
                 return 0;
@@ -287,6 +287,7 @@ class Ajax extends CI_Controller {
 		$classify = $this->input->get("classify");
         $time = $this->input->get("time");
         $status = $this->input->get("status");
+        $push = $this->input->get("push");
         $order = $this->input->get("order");
         $by = $this->input->get("by");
         $page = $this->input->get("page");
@@ -322,6 +323,10 @@ class Ajax extends CI_Controller {
         if($status){
 			$item .= " AND `status`={$status}";
         }
+
+        if($push){
+			$item .= " AND `push`={$push}";
+        }
         
         $order_s = "ORDER BY id";
 
@@ -344,11 +349,12 @@ class Ajax extends CI_Controller {
                 $by_s = "ASC";
             }
         }
+
+        $item_start = ($page - 1) * $limit;
         
-        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`number`,`title`,`cover`,`classify`,`status`,`time` FROM product WHERE {$item} {$order_s} {$by_s} LIMIT 10";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`number`,`title`,`cover`,`classify`,`status`,`push`,`time` FROM product WHERE {$item} {$order_s} {$by_s} LIMIT {$item_start},{$limit}";
         $data = $this->db->query($sql)->result_array();
         $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
-        $count = ceil($num / 10);
 
         //产品分类
 		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
@@ -363,17 +369,19 @@ class Ajax extends CI_Controller {
         
         $res["code"] = 0;
         $res["msg"] = "";
-        $res["count"] = $count;
+        $res["count"] = $num;
 
         foreach($data as $k => $v){
             $res["data"][$k] = [
                 "id" => $v["id"],
                 "number" => $v["number"],
                 "title" => $v["title"],
+                
                 "en_title" => $v["title"],
                 "status" => $v["status"],
                 "time" => date("Y-m-d H:i:s", $v["time"]),
-                "classify" => $cf[$v["classify"]]
+                "classify" => $cf[$v["classify"]],
+                "push" => $v["push"]
             ];
 
             if($v["cover"]){
@@ -390,6 +398,40 @@ class Ajax extends CI_Controller {
     public function del_product(){
         $id = $this->input->post("id");
         $sql = "DELETE FROM product WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //添加推送
+    public function add_push(){
+        $id = $this->input->post("id");
+
+        //检查已推送个数
+        $sql = "SELECT id FROM product WHERE push=2";
+        $push = $this->db->query($sql)->result_array();
+        if(count($push) >= 6){
+            echo 2;
+            exit;
+        }
+
+        $sql = "UPDATE product SET `push`=2 WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //取消推送
+    public function del_push(){
+        $id = $this->input->post("id");
+
+        $sql = "UPDATE product SET `push`=1 WHERE id={$id}";
         $query = $this->db->query($sql);
         if($query){
             echo 1;
@@ -563,11 +605,12 @@ class Ajax extends CI_Controller {
                 $by_s = "ASC";
             }
         }
+
+        $item_start = ($page - 1) * $limit;
         
-        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`title`,`cover`,`classify`,`status`,`time` FROM news WHERE {$item} {$order_s} {$by_s} LIMIT 10";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`title`,`cover`,`classify`,`status`,`time` FROM news WHERE {$item} {$order_s} {$by_s} LIMIT {$item_start},{$limit}";
         $data = $this->db->query($sql)->result_array();
         $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
-        $count = ceil($num / 10);
 
         //产品分类
 		$sql = "SELECT id,`name`,`title` FROM news_classify ORDER BY id ASC";
@@ -582,7 +625,7 @@ class Ajax extends CI_Controller {
         
         $res["code"] = 0;
         $res["msg"] = "";
-        $res["count"] = $count;
+        $res["count"] = $num;
 
         foreach($data as $k => $v){
             $res["data"][$k] = [

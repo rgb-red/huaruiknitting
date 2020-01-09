@@ -90,6 +90,16 @@
                                 </div>
                             </div>
                             <div class="layui-inline">
+                                <label class="layui-form-label">推送：</label>
+                                <div class="layui-input-inline">
+                                    <select name="push" class="push">
+                                        <option value="">全部</option>
+                                        <option value="2" <?php if($info["push"] == 2):?>selected<?php endif;?>>已推送</option>
+                                        <option value="1" <?php if($info["push"] == 1):?>selected<?php endif;?>>未推送</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
                                 <label class="layui-form-label">排序：</label>
                                 <div class="layui-input-inline">
                                     <select name="order" class="order">
@@ -125,6 +135,13 @@
                                 <button class="layui-btn layui-btn-primary layui-btn-xs">草稿箱</button>
                             {{#  } }}
                         </script>
+                        <script type="text/html" id="push_tpl">
+                            {{#  if(d.push == 1){ }}
+                                <button class="layui-btn layui-btn-primary layui-btn-xs" onclick="add_push({{ d.id }})">未推送</button>
+                            {{#  } else if(d.push == 2){ }}
+                                <button class="layui-btn layui-btn-xs" onclick="del_push({{ d.id }})">已推送</button>
+                            {{#  } }}
+                        </script>
                         <script type="text/html" id="cover_tpl">
                             {{# if(d.cover == ""){ }}
                                 <span>无</span>
@@ -158,13 +175,14 @@
         var classify = $(".classify").val() ? $(".classify").val() : "";
         var time = $("#time").val() ? $("#time").val() : "";
         var status = $(".status").val() ? $(".status").val() : "";
+        var push = $(".push").val() ? $(".push").val() : "";
         var order = $(".order").val() ? $(".order").val() : "1";
         var by = $(".by").val() ? $(".by").val() : "1";
 
         var table = layui.table;
         table.render({
             elem: '#main',
-            url: '/ajax/product_list?id=' + id + "&number=" + number + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&order=" + order + "&by=" + by,
+            url: '/ajax/product_list?id=' + id + "&number=" + number + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&push=" + push + "&order=" + order + "&by=" + by,
             page: true,
             cols: [[
                 {field: 'id', title: '编号', width:90, fixed: 'left'},
@@ -173,7 +191,8 @@
                 {field: 'cover', title: '封面', width:100, align:'center', templet: '#cover_tpl'},
                 {field: 'classify', title: '分类', width:120},
                 {field: 'status', title: '状态', width:80, align:'center', templet: '#status_tpl'},
-                {field: 'time', title: '保存时间', width:165,},
+                {field: 'push', title: '推送', width:80, align:'center', templet: '#push_tpl'},
+                {field: 'time', title: '保存时间', width:165},
                 {field: `operate`, title: '操作', width:200, align:'center', templet: '#do_tpl'}
             ]]
         });
@@ -271,6 +290,53 @@
 		layer.alert(msg, function(index){
 			layer.close(index);
 		});
-	}
+    }
+    
+    function add_push(id){
+        var load_layer = layer.load(2);
+        $.ajax({
+            method: "POST",
+            url: "/ajax/add_push",
+            data:{id: id},
+            success: function(data){
+                if(data == 2){
+                    error_tip("推送个数上限为6个，请先取消其他推送！", load_layer)
+                }
+                else if(data == 1){
+                    layer.alert('推送成功', function(index){
+                        window.location.reload()
+                    });
+                }
+                else{
+                    error_tip("推送失败，请刷新后重试", load_layer)
+                }
+            },
+            error: function(){
+                error_tip("系统错误，请刷新后重试", load_layer)
+            }
+        });
+    }
+
+    function del_push(id){
+        var load_layer = layer.load(2);
+        $.ajax({
+            method: "POST",
+            url: "/ajax/del_push",
+            data:{id: id},
+            success: function(data){
+                if(data == 1){
+                    layer.alert('取消推送成功', function(index){
+                        window.location.reload()
+                    });
+                }
+                else{
+                    error_tip("取消推送失败，请刷新后重试", load_layer)
+                }
+            },
+            error: function(){
+                error_tip("系统错误，请刷新后重试", load_layer)
+            }
+        });
+    }
 </script>
 </html>
