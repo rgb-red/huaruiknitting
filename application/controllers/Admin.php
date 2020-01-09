@@ -148,7 +148,16 @@ class Admin extends ADMIN_Controller {
 
 	//新闻管理
 	public function news(){
-		echo "news";
+		$data["info"]["id"] = $this->input->get("id") ? $this->input->get("id") : "";
+		$data["info"]["number"] = $this->input->get("number") ? $this->input->get("number") : "";
+		$data["info"]["title"] = $this->input->get("title") ? $this->input->get("title") : "";
+		$data["info"]["classify"] = $this->input->get("classify") ? $this->input->get("classify") : "";
+		$data["info"]["time"] = $this->input->get("time") ? $this->input->get("time") : "";
+		$data["info"]["status"] = $this->input->get("status") ? $this->input->get("status") : "";
+		$data["info"]["order"] = $this->input->get("order") ? $this->input->get("order") : "1";
+		$data["info"]["by"] = $this->input->get("by") ? $this->input->get("by") : "1";
+
+		$this->load->view("admin/news_list", $data);
 	}
 
 	//留言管理

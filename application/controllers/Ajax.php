@@ -385,6 +385,17 @@ class Ajax extends CI_Controller {
         echo json_encode($res);
     }
 
+    public function del_product(){
+        $id = $this->input->post("id");
+        $sql = "DELETE FROM product WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
 
 
 
