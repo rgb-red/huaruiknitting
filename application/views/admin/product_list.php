@@ -219,7 +219,7 @@
         });
     });
 
-    删除产品
+    //删除产品
     function del_product(obj, id){
         layer.confirm("删除后无法撤销，确认要删除此产品？", {
 			title: "提示",
