@@ -285,6 +285,9 @@ class Ajax extends CI_Controller {
 		$title = $this->input->get("title");
 		$classify = $this->input->get("classify");
         $time = $this->input->get("time");
+        $status = $this->input->get("status");
+        $order = $this->input->get("order");
+        $by = $this->input->get("by");
         $page = $this->input->get("page");
         $limit = $this->input->get("limit");
         $item = "1=1";
@@ -294,7 +297,7 @@ class Ajax extends CI_Controller {
 		}
 
 		if($number){
-			$item .= " AND `number`={$number}";
+			$item .= " AND `number` LIKE '%{$number}%'";
 		}
 
 		if($title){
@@ -314,12 +317,38 @@ class Ajax extends CI_Controller {
 			$item .= "`time`>={$s_time}";
 			$item .= " AND `time`<={$e_time}";
         }
+
+        if($status){
+			$item .= " AND `status`={$status}";
+        }
         
-        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`number`,`title`,`cover`,`classify`,`status`,`time` FROM product WHERE {$item} ORDER BY id DESC LIMIT 10";
+        $order_s = "ORDER BY id";
+
+        if($order){
+            if($order == 1){
+                $order_s = "ORDER BY id";
+            }
+            else if($order == 2){
+                $order_s = "ORDER BY time";
+            }
+        }
+
+        $by_s = "DESC";
+
+        if($by){
+            if($by == 1){
+                $by_s = "DESC";
+            }
+            else if($by == 2){
+                $by_s = "ASC";
+            }
+        }
+        
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`number`,`title`,`cover`,`classify`,`status`,`time` FROM product WHERE {$item} {$order_s} {$by_s} LIMIT 10";
         $data = $this->db->query($sql)->result_array();
         $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
         $count = ceil($num / 10);
-        
+
         //产品分类
 		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
         $classify = $this->db->query($sql)->result_array();

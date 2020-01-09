@@ -111,6 +111,9 @@ class Admin extends ADMIN_Controller {
 		$data["info"]["title"] = $this->input->get("title") ? $this->input->get("title") : "";
 		$data["info"]["classify"] = $this->input->get("classify") ? $this->input->get("classify") : "";
 		$data["info"]["time"] = $this->input->get("time") ? $this->input->get("time") : "";
+		$data["info"]["status"] = $this->input->get("status") ? $this->input->get("status") : "";
+		$data["info"]["order"] = $this->input->get("order") ? $this->input->get("order") : "1";
+		$data["info"]["by"] = $this->input->get("by") ? $this->input->get("by") : "1";
 
 		//产品分类
 		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
