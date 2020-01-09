@@ -92,7 +92,6 @@
                                     <a href="javascript:;">首页<span class="layui-nav-more"></span></a>
                                     <dl class="layui-nav-child">
                                         <dd><a lay-href="/admin/slide">轮播图</a></dd>
-                                        <dd><a lay-href="/admin/proshow">产品展示</a></dd>
                                         <dd><a lay-href="/admin/about">关于华瑞</a></dd>
                                     </dl>
                                 </dd>

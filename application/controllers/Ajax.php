@@ -279,6 +279,7 @@ class Ajax extends CI_Controller {
         }
     }
 
+    //产品列表
     public function product_list(){
         $id = $this->input->get("id");
 		$number = $this->input->get("number");
@@ -385,6 +386,7 @@ class Ajax extends CI_Controller {
         echo json_encode($res);
     }
 
+    //删除产品
     public function del_product(){
         $id = $this->input->post("id");
         $sql = "DELETE FROM product WHERE id={$id}";
@@ -394,6 +396,212 @@ class Ajax extends CI_Controller {
         }else{
             echo 0;
         }
+    }
+
+    //新闻编辑器图片上传
+    public function news_upload_image(){ 
+        //获取前台url
+        $sql = "SELECT front_url FROM site_info WHERE id=0";
+        $front_url = $this->db->query($sql)->row_array()["front_url"];
+        
+        //图片临时保存位置
+        $images = $_FILES["file"];
+        $name_break = explode(".", $images["name"]);
+        $tmp =  $name_break[count($name_break) - 1];
+        $save_name = date("Y-m-d") . "-" . md5(time() . cteateSalt() . cteateSalt()) . "." . $tmp;
+        $save_path = $this->config->item("site_path") . "webroot/uploads/news/" . $save_name;
+        
+        //保存图片，返回信息
+        $img_obj = $images["tmp_name"];
+        if(move_uploaded_file($img_obj, $save_path)){
+            $data = [
+                "code" => 0,
+                "msg" => "success",
+                "data" => [
+                    "src" => $front_url . "/uploads/news/" . $save_name,
+                    "title" => "",
+                ],
+            ];
+        }else{
+            $data = [
+                "code" => 1,
+                "msg" => "上传错误！",
+            ];
+        }
+
+        echo json_encode($data);
+    }
+
+    //保存产品
+    public function save_news(){
+        $id = $this->input->post("id");
+        if(!$id){
+            //插入空白行，创建产品ID
+            $sql = "INSERT INTO news (`title`,`classify`,`hot`,`brief`,`text`,`cover`,`status`) VALUES ('','','','','',0,0)";
+            $ins = $this->db->query($sql);
+            if(!$ins){
+                return 0;
+            }
+
+            //获取产品ID
+            $sql = "SELECT id FROM news ORDER BY id DESC LIMIT 1";
+            $id = $this->db->query($sql)->row_array()["id"];
+        }
+
+        //若有上传产品封面，保存封面
+        if($_FILES){
+            $cover = $_FILES["cover"];
+            $name_break = explode(".", $cover["name"]);
+            $tmp =  $name_break[count($name_break) - 1];
+            $save_path = $this->config->item("site_path") . "webroot/uploads/p_cover/" . $id . "." . $tmp;
+            $cover_obj = $cover["tmp_name"];
+            if(!move_uploaded_file($cover_obj, $save_path)){
+                echo 0;
+                exit;
+            }
+            $data["cover"] = 1;
+        }
+
+        //接受其他参数
+        $data["title"] = $this->input->post("title");
+        $data["en_title"] = $this->input->post("en_title");
+        $data["classify"] = $this->input->post("product_classify");
+        $data["brief"] = $this->input->post("brief");
+        $data["en_brief"] = $this->input->post("en_brief");
+        $data["text"] = $this->input->post("textarea_html");
+        $data["en_text"] = $this->input->post("en_textarea_html");
+        $data["status"] = $this->input->post("status");
+        $textarea_text = $this->input->post("textarea_text");
+        $en_textarea_text = $this->input->post("en_textarea_text");
+        $data["time"] = time();
+
+        //处理简介
+        if(!$data["brief"]){
+            if(mb_strlen($textarea_text) >= 25){
+                $data["brief"] = mb_substr($textarea_text, 0, 25) . "...";
+            }else{
+                $data["brief"] = $textarea_text;
+            }
+        }
+
+        if(!$data["en_brief"]){
+            if(mb_strlen($en_textarea_text) >= 50){
+                $data["en_brief"] = mb_substr($en_textarea_text, 0, 50) . "...";
+            }else{
+                $data["en_brief"] = $en_textarea_text;
+            }
+        }
+
+        //写入数据库
+        $item = sql_update_merge_item($data);
+        $sql = "UPDATE news SET {$item} WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo $id;
+        }else{
+            echo 0;
+        }
+    }
+
+    //新闻列表
+    public function news_list(){
+        $id = $this->input->get("id");
+		$title = $this->input->get("title");
+		$classify = $this->input->get("classify");
+        $time = $this->input->get("time");
+        $status = $this->input->get("status");
+        $order = $this->input->get("order");
+        $by = $this->input->get("by");
+        $page = $this->input->get("page");
+        $limit = $this->input->get("limit");
+        $item = "1=1";
+        
+        if($id){
+			$item .= " AND `id`={$id}";
+		}
+
+		if($title){
+			$item .= " AND (`title` LIKE '%{$title}%' OR `en_title` LIKE '%{$title}%')";
+		}
+
+		if($classify){
+			$item .= " AND `classify`={$classify}";
+		}
+
+		if($time){
+			$item .= " AND";
+			$time = explode("~", $time);
+			$s_time = strtotime($time[0]);
+			$e_time = strtotime($time[1]);
+
+			$item .= "`time`>={$s_time}";
+			$item .= " AND `time`<={$e_time}";
+        }
+
+        if($status){
+			$item .= " AND `status`={$status}";
+        }
+        
+        $order_s = "ORDER BY id";
+
+        if($order){
+            if($order == 1){
+                $order_s = "ORDER BY id";
+            }
+            else if($order == 2){
+                $order_s = "ORDER BY time";
+            }
+        }
+
+        $by_s = "DESC";
+
+        if($by){
+            if($by == 1){
+                $by_s = "DESC";
+            }
+            else if($by == 2){
+                $by_s = "ASC";
+            }
+        }
+        
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`title`,`cover`,`classify`,`status`,`time` FROM news WHERE {$item} {$order_s} {$by_s} LIMIT 10";
+        $data = $this->db->query($sql)->result_array();
+        $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
+        $count = ceil($num / 10);
+
+        //产品分类
+		$sql = "SELECT id,`name`,`title` FROM news_classify ORDER BY id ASC";
+        $classify = $this->db->query($sql)->result_array();
+        foreach($classify as $v){
+            $cf[$v["id"]] = $v["name"];
+        }
+
+        //前端URL
+		$sql = "SELECT front_url FROM site_info WHERE id=0";
+		$front_url = $this->db->query($sql)->row_array()["front_url"];
+        
+        $res["code"] = 0;
+        $res["msg"] = "";
+        $res["count"] = $count;
+
+        foreach($data as $k => $v){
+            $res["data"][$k] = [
+                "id" => $v["id"],
+                "title" => $v["title"],
+                "en_title" => $v["title"],
+                "status" => $v["status"],
+                "time" => date("Y-m-d H:i:s", $v["time"]),
+                "classify" => $cf[$v["classify"]]
+            ];
+
+            if($v["cover"]){
+                $res["data"][$k]["cover"] = $front_url . "/uploads/p_cover/" . $v["id"] . ".jpg";
+            }else{
+                $res["data"][$k]["cover"] = "";
+            }
+        }
+
+        echo json_encode($res);
     }
 
 

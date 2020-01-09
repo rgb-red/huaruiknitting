@@ -48,11 +48,6 @@ class Admin extends ADMIN_Controller {
 		$this->load->view("admin/slide", $data);
 	}
 
-	//首页产品展示
-	public function proshow(){
-		echo "proshow";
-	}
-
 	//首页关于华瑞
 	public function about(){
 		echo "about";
@@ -83,7 +78,7 @@ class Admin extends ADMIN_Controller {
 		echo "honor";
 	}
 
-	//产品管理
+	//产品编辑
 	public function edit_product(){
 		$id = $this->input->get("id");
 		if($id != ""){
@@ -105,6 +100,7 @@ class Admin extends ADMIN_Controller {
 		$this->load->view("admin/edit_product", $data);
 	}
 
+	//产品列表
 	public function product_list(){
 		$data["info"]["id"] = $this->input->get("id") ? $this->input->get("id") : "";
 		$data["info"]["number"] = $this->input->get("number") ? $this->input->get("number") : "";
@@ -149,7 +145,6 @@ class Admin extends ADMIN_Controller {
 	//新闻管理
 	public function news(){
 		$data["info"]["id"] = $this->input->get("id") ? $this->input->get("id") : "";
-		$data["info"]["number"] = $this->input->get("number") ? $this->input->get("number") : "";
 		$data["info"]["title"] = $this->input->get("title") ? $this->input->get("title") : "";
 		$data["info"]["classify"] = $this->input->get("classify") ? $this->input->get("classify") : "";
 		$data["info"]["time"] = $this->input->get("time") ? $this->input->get("time") : "";
@@ -157,7 +152,33 @@ class Admin extends ADMIN_Controller {
 		$data["info"]["order"] = $this->input->get("order") ? $this->input->get("order") : "1";
 		$data["info"]["by"] = $this->input->get("by") ? $this->input->get("by") : "1";
 
+		//新闻分类
+		$sql = "SELECT id,`name`,`title` FROM news_classify ORDER BY id ASC";
+		$data["classify"] = $this->db->query($sql)->result_array();
+
 		$this->load->view("admin/news_list", $data);
+	}
+
+	//新闻编辑
+	public function edit_news(){
+		$id = $this->input->get("id");
+		if($id != ""){
+			$sql = "SELECT * FROM news WHERE id={$id}";
+			$data["info"] = $this->db->query($sql)->row_array();
+			$data["id"] = $data["info"]["id"];
+		}else{
+			$data["id"] = "";
+		}
+
+		//新闻分类
+		$sql = "SELECT id,`name`,`title` FROM news_classify ORDER BY id ASC";
+		$data["classify"] = $this->db->query($sql)->result_array();
+
+		//前段URL
+		$sql = "SELECT front_url FROM site_info WHERE id=0";
+		$data["front_url"] = $this->db->query($sql)->row_array()["front_url"];
+
+		$this->load->view("admin/edit_news", $data);
 	}
 
 	//留言管理

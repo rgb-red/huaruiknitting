@@ -39,7 +39,7 @@
 			<div class="layui-card">
                 <div class="layui-form layui-card-header layuiadmin-card-header-auto">
                     <div class="layui-form-item">
-                        <form class="layui-form" action="/admin/product_list" method="GET">
+                        <form class="layui-form" action="/admin/news" method="GET">
                             <div class="layui-inline">
                                 <label class="layui-form-label">ID：</label>
                                 <div class="layui-input-inline">
@@ -47,13 +47,7 @@
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">型号：</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="number" autocomplete="off" class="layui-input number" value="<?=$info["number"]?>">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <label class="layui-form-label">产品名：</label>
+                                <label class="layui-form-label">标题：</label>
                                 <div class="layui-input-inline">
                                     <input type="text" name="title" placeholder="中文或英文" autocomplete="off" class="layui-input title" value="<?=$info["title"]?>">
                                 </div>
@@ -142,7 +136,7 @@
 		</div>
 	</div>
 </div>
-<div class="show-cover-area"><img src="http://h.com/uploads/cover/34.jpg"></div>
+<div class="show-cover-area"><img src="#"></div>
 </body>
 <script src="/js/jquery.min.js"></script>
 <script src="/layui/js/layui.js"></script>
@@ -153,7 +147,6 @@
     //初始化表格
     layui.use('table', function(){
         var id = $(".id").val() ? $(".id").val() : "";
-        var number = $(".number").val() ? $(".number").val() : "";
         var title = $(".title").val() ? $(".title").val() : "";
         var classify = $(".classify").val() ? $(".classify").val() : "";
         var time = $("#time").val() ? $("#time").val() : "";
@@ -164,16 +157,15 @@
         var table = layui.table;
         table.render({
             elem: '#main',
-            url: '/ajax/product_list?id=' + id + "&number=" + number + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&order=" + order + "&by=" + by,
+            url: '/ajax/news_list?id=' + id + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&order=" + order + "&by=" + by,
             page: true,
             cols: [[
                 {field: 'id', title: '编号', width:90, fixed: 'left'},
-                {field: 'number', title: '型号', width:160},
-                {field: 'title', title: '产品名', templet: '#title_tpl'},
+                {field: 'title', title: '新闻标题', templet: '#title_tpl'},
                 {field: 'cover', title: '封面', width:100, align:'center', templet: '#cover_tpl'},
                 {field: 'classify', title: '分类', width:120},
                 {field: 'status', title: '状态', width:80, align:'center', templet: '#status_tpl'},
-                {field: 'time', title: '发布时间', width:165,},
+                {field: 'time', title: '保存时间', width:165,},
                 {field: `operate`, title: '操作', width:200, align:'center', templet: '#do_tpl'}
             ]]
         });
@@ -198,7 +190,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['90%', '90%'],
-            content: '/admin/edit_product?id=' + id,
+            content: '/admin/edit_news?id=' + id,
             cancel: function(){
                 window.location.reload()
             }
@@ -212,7 +204,7 @@
             shadeClose: true,
             shade: 0.8,
             area: ['90%', '90%'],
-            content: '/admin/edit_product',
+            content: '/admin/edit_news',
             cancel: function(){
                 window.location.reload()
             }
@@ -221,7 +213,7 @@
 
     //删除产品
     function del_product(obj, id){
-        layer.confirm("删除后无法撤销，确认要删除此产品？", {
+        layer.confirm("删除后无法撤销，确认要删除此文章？", {
 			title: "提示",
 			btn: ['确定','取消'] //按钮
 		},function(){
@@ -229,7 +221,7 @@
 
 			$.ajax({
 				method: "POST",
-				url: "/ajax/del_product",
+				url: "/ajax/del_new",
 				data:{id: id},
 				success: function(data){
 					if(data == 1){

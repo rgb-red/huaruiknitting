@@ -142,7 +142,7 @@
 		</div>
 	</div>
 </div>
-<div class="show-cover-area"><img src="http://h.com/uploads/cover/34.jpg"></div>
+<div class="show-cover-area"><img src="#"></div>
 </body>
 <script src="/js/jquery.min.js"></script>
 <script src="/layui/js/layui.js"></script>
@@ -173,7 +173,7 @@
                 {field: 'cover', title: '封面', width:100, align:'center', templet: '#cover_tpl'},
                 {field: 'classify', title: '分类', width:120},
                 {field: 'status', title: '状态', width:80, align:'center', templet: '#status_tpl'},
-                {field: 'time', title: '发布时间', width:165,},
+                {field: 'time', title: '保存时间', width:165,},
                 {field: `operate`, title: '操作', width:200, align:'center', templet: '#do_tpl'}
             ]]
         });

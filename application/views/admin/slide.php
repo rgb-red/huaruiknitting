@@ -40,7 +40,7 @@
         <div class="layui-col-md2 layui-col-sm4 slide_item" data-id="<?=$v["id"]?>">
             <div class="cmdlist-container">
 				<div href="javascript:;" class="layui-col-lg12" style="text-align:center">
-                    <img src="<?=$this->SITE["front_url"]?>/uploads/banner/<?=$v["id"]?>.jpg" width="100%">
+                    <img src="<?=$this->SITE["front_url"]?>/uploads/banner/<?=$v["id"]?>.jpg" width="100%" height="100px">
                 </div>
                 <p style="text-align:center">顺序：<a class="set-sort" href="javascript:;" data-sort="<?=$v["sort"]?>"><?=$v["sort"]?></a></p>
                 <p style="text-align:center">链接：<a class="set-url" href="javascript:;" data-url="<?php if($v["url"]){echo $v["url"];}else{echo "0";}?>"><?php if($v["url"]){echo $v["url"];}else{echo "不跳转";}?></a></p>
