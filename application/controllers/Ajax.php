@@ -280,35 +280,80 @@ class Ajax extends CI_Controller {
     }
 
     public function product_list(){
-        $data = [
-            "code" => 0,
-            "msg" => "",
-            "count" => 100,
-            "data" => [
-                [
-                    "id" => 10000,
-                    "number" => "aba-123",
-                    "title" => "保暖衣",
-                    "en_title" => "baonuan",
-                    "cover" => "http://h.com/uploads/cover/34.jpg",
-                    "classify" => "保暖衣系列",
-                    "status" => 2,
-                    "time" => date("Y-m-d H:i:s"),
-                ],[
-                    "id" => 10000,
-                    "number" => "aba-123",
-                    "title" => "保暖衣",
-                    "en_title" => "baonuan",
-                    "cover" => "http://h.com/uploads/cover/34.jpg",
-                    "classify" => 8,
-                    "status" => 1,
-                    "time" => date("Y-m-d H:i:s"),
-                ],
-            ]
-        ];
+        $id = $this->input->get("id");
+		$number = $this->input->get("number");
+		$title = $this->input->get("title");
+		$classify = $this->input->get("classify");
+        $time = $this->input->get("time");
+        $page = $this->input->get("page");
+        $limit = $this->input->get("limit");
+        $item = "1=1";
         
+        if($id){
+			$item .= " AND `id`={$id}";
+		}
 
-        echo json_encode($data);
+		if($number){
+			$item .= " AND `number`={$number}";
+		}
+
+		if($title){
+			$item .= " AND (`title` LIKE '%{$title}%' OR `en_title` LIKE '%{$title}%')";
+		}
+
+		if($classify){
+			$item .= " AND `classify`={$classify}";
+		}
+
+		if($time){
+			$item .= " AND";
+			$time = explode("~", $time);
+			$s_time = strtotime($time[0]);
+			$e_time = strtotime($time[1]);
+
+			$item .= "`time`>={$s_time}";
+			$item .= " AND `time`<={$e_time}";
+        }
+        
+        $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`number`,`title`,`cover`,`classify`,`status`,`time` FROM product WHERE {$item} ORDER BY id DESC LIMIT 10";
+        $data = $this->db->query($sql)->result_array();
+        $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
+        $count = ceil($num / 10);
+        
+        //产品分类
+		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
+        $classify = $this->db->query($sql)->result_array();
+        foreach($classify as $v){
+            $cf[$v["id"]] = $v["name"];
+        }
+
+        //前端URL
+		$sql = "SELECT front_url FROM site_info WHERE id=0";
+		$front_url = $this->db->query($sql)->row_array()["front_url"];
+        
+        $res["code"] = 0;
+        $res["msg"] = "";
+        $res["count"] = $count;
+
+        foreach($data as $k => $v){
+            $res["data"][$k] = [
+                "id" => $v["id"],
+                "number" => $v["number"],
+                "title" => $v["title"],
+                "en_title" => $v["title"],
+                "status" => $v["status"],
+                "time" => date("Y-m-d H:i:s", $v["time"]),
+                "classify" => $cf[$v["classify"]]
+            ];
+
+            if($v["cover"]){
+                $res["data"][$k]["cover"] = $front_url . "/uploads/cover/" . $v["id"] . ".jpg";
+            }else{
+                $res["data"][$k]["cover"] = "";
+            }
+        }
+
+        echo json_encode($res);
     }
 
 

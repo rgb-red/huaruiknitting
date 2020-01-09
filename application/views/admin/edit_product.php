@@ -94,7 +94,6 @@
 									<label class="layui-form-label">&nbsp;</label>
 									<button type="button" id="save-btn" class="layui-btn">发布</button>
 									<button type="button" id="draft-btn" class="layui-btn layui-btn-warm">保存为草稿</button>
-									<button type="button" id="cancel-btn"  class="layui-btn layui-btn-primary">取消</button>
 								</div>
 							</form>
 						</div>
@@ -251,7 +250,6 @@
 		}, function(){
 			layer.close(load_layer);
 		});
-		
 	}
 </script>
 </html>

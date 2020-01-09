@@ -106,7 +106,17 @@ class Admin extends ADMIN_Controller {
 	}
 
 	public function product_list(){
-		$this->load->view("admin/product_list");
+		$data["info"]["id"] = $this->input->get("id") ? $this->input->get("id") : "";
+		$data["info"]["number"] = $this->input->get("number") ? $this->input->get("number") : "";
+		$data["info"]["title"] = $this->input->get("title") ? $this->input->get("title") : "";
+		$data["info"]["classify"] = $this->input->get("classify") ? $this->input->get("classify") : "";
+		$data["info"]["time"] = $this->input->get("time") ? $this->input->get("time") : "";
+
+		//产品分类
+		$sql = "SELECT id,`name`,`title` FROM product_classify ORDER BY id ASC";
+		$data["classify"] = $this->db->query($sql)->result_array();
+
+		$this->load->view("admin/product_list", $data);
 	}
 
 	//产品分类管理
