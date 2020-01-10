@@ -220,6 +220,6 @@ class Admin extends ADMIN_Controller {
 
 	//用户管理
 	public function user(){
-		echo "user";
+		$this->load->view("admin/user");
 	}
 }
