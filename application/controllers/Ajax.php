@@ -781,30 +781,92 @@ class Ajax extends CI_Controller {
     }
 
     public function get_contact(){
-        $msg = '{
-            "code": 0
-            ,"msg": ""
-            ,"count": 60
-            ,"data": [
-                {
-                    "id": 123,
-                    "title": "你好新朋友，感谢使用 layuiAdmin",
-                    "username": "1111",
-                    "ip":"127.0.0.1",
-                    "status":1,
-                    "time": 1510363800000
-                }, 
-                {
-                    "id": 111,
-                    "title": "贤心发来了一段私信",
-                    "username":"22222",
-                    "ip":"127.0.0.1",
-                    "status":2,
-                    "time": 1510212370000
-                }
-            ]
-        }';
-        echo $msg;
+        $status = $this->input->get("type");
+        $limit = $this->input->get("limit");
+        $page = $this->input->get("page");
+        $start = ($page - 1) * $limit;
+
+        if($status){
+            $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`status`,`username`,`text` as title,`time`,`ip` FROM contact WHERE `status`={$status} ORDER BY id DESC LIMIT {$start}, {$limit}";
+        }
+        else{
+            $sql = "SELECT SQL_CALC_FOUND_ROWS `id`,`status`,`username`,`text` as title,`time`,`ip` FROM contact ORDER BY id DESC LIMIT {$start}, {$limit}";
+        }
+
+        $res = $this->db->query($sql)->result_array();
+        $num = $this->db->select('found_rows() as nums')->get()->row_array()["nums"];
+
+        foreach($res as $k => $v){
+            if(mb_strlen($v["title"]) > 50){
+                $res[$k]["title"] = mb_substr($v["title"], 0, 48) . "...";
+            }
+            $res[$k]["time"] = $v["time"] * 1000;
+        }
+
+        $data["code"] = 0;
+        $data["msg"] = "";
+        $data["count"] = $num;
+        $data["data"] = $res;
+
+        echo json_encode($data);
+    }
+
+    public function del_contact(){
+        $id = $this->input->post("id");
+
+        $sql = "DELETE FROM contact WHERE id in ({$id})";
+        $query = $this->db->query($sql);
+
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    public function set_read_contact(){
+        $id = $this->input->post("id");
+
+        $sql = "UPDATE contact SET `status`=2  WHERE id in ({$id})";
+        $query = $this->db->query($sql);
+
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    public function set_allread_contact(){
+        $id = $this->input->post("id");
+
+        $sql = "UPDATE contact SET `status`=2";
+        $query = $this->db->query($sql);
+
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    public function set_noread_contact(){
+        $id = $this->input->post("id");
+
+        $sql = "UPDATE contact SET `status`=1  WHERE id in ({$id})";
+        $query = $this->db->query($sql);
+
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    public function get_noread(){
+        $sql = "SELECT id FROM contact WHERE `status`=1";
+        $query = $this->db->query($sql)->result_array();
+        echo count($query);
     }
 
 

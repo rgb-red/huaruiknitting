@@ -201,7 +201,21 @@ class Admin extends ADMIN_Controller {
 
 	//留言管理
 	public function contact(){
-		$this->load->view("admin/contact");
+		$sql = "SELECT id FROM contact WHERE `status`=1";
+		$query = $this->db->query($sql)->result_array();
+		$data["no_read"] = count($query);
+
+		$this->load->view("admin/contact", $data);
+	}
+	
+	//留言详情
+	public function contact_item(){
+		$id = $this->input->get("id");
+		$sql = "UPDATE contact SET `status`=2 WHERE id={$id}";
+		$this->db->query($sql);
+		$sql = "SELECT * FROM contact WHERE id={$id}";
+		$data = $this->db->query($sql)->row_array();
+		$this->load->view("admin/contact_item",$data);
 	}
 
 	//用户管理
