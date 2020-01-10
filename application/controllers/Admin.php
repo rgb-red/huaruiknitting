@@ -50,32 +50,49 @@ class Admin extends ADMIN_Controller {
 
 	//首页关于华瑞
 	public function about(){
-		
+		$sql = "SELECT * FROM `page` WHERE `page`='about'";
+		$data["info"] = $this->db->query($sql)->row_array();
+
+		$this->load->view("admin/about", $data);
 	}
 
 	//公司简介
 	public function intro(){
-		echo "intro";
+		$sql = "SELECT * FROM `page` WHERE `page`='intro'";
+		$data["info"] = $this->db->query($sql)->row_array();
+		
+		$this->load->view("admin/intro", $data);
 	}
 
 	//总经理致辞
 	public function speech(){
-		echo "speech";
+		$sql = "SELECT * FROM `page` WHERE `page`='speech'";
+		$data["info"] = $this->db->query($sql)->row_array();
+		
+		$this->load->view("admin/speech", $data);
 	}
 
 	//企业文化
 	public function culture(){
-		echo "culture";
+		$sql = "SELECT * FROM `page` WHERE `page`='culture'";
+		$data["info"] = $this->db->query($sql)->row_array();
+		
+		$this->load->view("admin/culture", $data);
 	}
 
 	//厂房设备
 	public function factory(){
-		echo "factory";
+		$sql = "SELECT * FROM factory ORDER BY sort ASC";
+		$data["slide"] = $this->db->query($sql)->result_array();
+		$this->load->view("admin/factory", $data);
 	}
 
 	//荣誉资质
 	public function honor(){
-		echo "honor";
+		$sql = "SELECT * FROM `page` WHERE `page`='honor'";
+		$data["info"] = $this->db->query($sql)->row_array();
+		
+		$this->load->view("admin/honor", $data);
 	}
 
 	//产品编辑

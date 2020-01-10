@@ -242,13 +242,13 @@ class Ajax extends CI_Controller {
         $data["en_title"] = $this->input->post("en_title");
         $data["number"] = $this->input->post("number");
         $data["classify"] = $this->input->post("product_classify");
-        $data["brief"] = $this->input->post("brief");
-        $data["en_brief"] = $this->input->post("en_brief");
-        $data["text"] = $this->input->post("textarea_html");
-        $data["en_text"] = $this->input->post("en_textarea_html");
+        $data["brief"] = htmlspecialchars($this->input->post("brief"), ENT_QUOTES);
+        $data["en_brief"] = htmlspecialchars($this->input->post("en_brief"), ENT_QUOTES);
+        $data["text"] = htmlspecialchars($this->input->post("textarea_html"), ENT_QUOTES);
+        $data["en_text"] = htmlspecialchars($this->input->post("en_textarea_html"), ENT_QUOTES);
         $data["status"] = $this->input->post("status");
-        $textarea_text = $this->input->post("textarea_text");
-        $en_textarea_text = $this->input->post("en_textarea_text");
+        $textarea_text = htmlspecialchars($this->input->post("textarea_text"), ENT_QUOTES);
+        $en_textarea_text = htmlspecialchars($this->input->post("en_textarea_text"), ENT_QUOTES);
         $data["time"] = time();
 
         //处理简介
@@ -505,16 +505,16 @@ class Ajax extends CI_Controller {
         }
 
         //接受其他参数
-        $data["title"] = $this->input->post("title");
-        $data["en_title"] = $this->input->post("en_title");
+        $data["title"] = htmlspecialchars($this->input->post("title"), ENT_QUOTES);
+        $data["en_title"] = htmlspecialchars($this->input->post("en_title"), ENT_QUOTES);
         $data["classify"] = $this->input->post("product_classify");
-        $data["brief"] = $this->input->post("brief");
-        $data["en_brief"] = $this->input->post("en_brief");
-        $data["text"] = $this->input->post("textarea_html");
-        $data["en_text"] = $this->input->post("en_textarea_html");
+        $data["brief"] = htmlspecialchars($this->input->post("brief"), ENT_QUOTES);
+        $data["en_brief"] = htmlspecialchars($this->input->post("en_brief"), ENT_QUOTES);
+        $data["text"] = htmlspecialchars($this->input->post("textarea_html"), ENT_QUOTES);
+        $data["en_text"] = htmlspecialchars($this->input->post("en_textarea_html"), ENT_QUOTES);
         $data["status"] = $this->input->post("status");
-        $textarea_text = $this->input->post("textarea_text");
-        $en_textarea_text = $this->input->post("en_textarea_text");
+        $textarea_text = htmlspecialchars($this->input->post("textarea_text"), ENT_QUOTES);
+        $en_textarea_text = htmlspecialchars($this->input->post("en_textarea_text"), ENT_QUOTES);
         $data["time"] = time();
 
         //处理简介
@@ -647,7 +647,55 @@ class Ajax extends CI_Controller {
         echo json_encode($res);
     }
 
+    public function set_page(){
+        $page = $this->input->post("page");
+        $data["text"] = htmlspecialchars($this->input->post("text"), ENT_QUOTES);
+        $data["en_text"] = htmlspecialchars($this->input->post("en_text"), ENT_QUOTES);
 
+        $item = sql_update_merge_item($data);
+
+        $sql = "UPDATE `page` SET {$item} WHERE `page`='{$page}'";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //编辑器图片上传
+    public function page_upload_image(){ 
+        //获取前台url
+        $sql = "SELECT front_url FROM site_info WHERE id=0";
+        $front_url = $this->db->query($sql)->row_array()["front_url"];
+        
+        //图片临时保存位置
+        $images = $_FILES["file"];
+        $name_break = explode(".", $images["name"]);
+        $tmp =  $name_break[count($name_break) - 1];
+        $save_name = date("Y-m-d") . "-" . md5(time() . cteateSalt() . cteateSalt()) . "." . $tmp;
+        $save_path = $this->config->item("site_path") . "webroot/uploads/page/" . $save_name;
+        
+        //保存图片，返回信息
+        $img_obj = $images["tmp_name"];
+        if(move_uploaded_file($img_obj, $save_path)){
+            $data = [
+                "code" => 0,
+                "msg" => "success",
+                "data" => [
+                    "src" => $front_url . "/uploads/page/" . $save_name,
+                    "title" => "",
+                ],
+            ];
+        }else{
+            $data = [
+                "code" => 1,
+                "msg" => "上传错误！",
+            ];
+        }
+
+        echo json_encode($data);
+    }
 
 
 
