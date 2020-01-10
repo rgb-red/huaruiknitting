@@ -201,7 +201,7 @@ class Admin extends ADMIN_Controller {
 
 	//留言管理
 	public function contact(){
-		echo "contact";
+		$this->load->view("admin/contact");
 	}
 
 	//用户管理

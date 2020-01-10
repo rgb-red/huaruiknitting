@@ -697,6 +697,116 @@ class Ajax extends CI_Controller {
         echo json_encode($data);
     }
 
+    //修改轮播图顺序
+    public function set_factory_sort(){
+        $id = (int)$this->input->post("id");
+        $sort = (int)$this->input->post("sort");
+
+        if(!check_all_num($sort)){
+            echo 2;
+            exit;
+        }
+
+        $sql = "UPDATE factory SET `sort`={$sort} WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //删除轮播图
+    public function del_factory(){
+        $id = $this->input->post("id");
+        $sql = "DELETE FROM factory WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //添加轮播图
+    public function add_factory(){
+        $img = $_FILES["img"];
+
+        $img_name_break = explode(".", $img["name"]);
+        $img_tmp =  $img_name_break[count($img_name_break) - 1];
+
+        if($img_tmp != "jpg"){
+            echo 0;
+            exit;
+        }
+
+        $sql = "INSERT INTO factory (`sort`) VALUES (0)";
+        $query = $this->db->query($sql);
+        if(!$query){
+            echo 0;
+            exit;
+        }
+
+        $sql = "SELECT id FROM factory ORDER BY id DESC Limit 1";
+        $id = $this->db->query($sql)->row_array()["id"];
+
+        $img_save_path = $this->config->item("site_path") . "webroot/uploads/factory/" . $id . "." . $img_tmp;
+        $img_obj = $img["tmp_name"];
+        if(move_uploaded_file($img_obj, $img_save_path)){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    //修改工厂名称
+    public function set_factory_title(){
+        $id = (int)$this->input->post("id");
+        $type = $this->input->post("type");
+        $title = htmlspecialchars($this->input->post("title"), ENT_QUOTES);
+
+        if($type == 1){
+            $item = "`title`='{$title}'";
+        }else{
+            $item = "`en_title`='{$title}'";
+        }
+
+        $sql = "UPDATE factory SET {$item} WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+
+    public function get_contact(){
+        $msg = '{
+            "code": 0
+            ,"msg": ""
+            ,"count": 60
+            ,"data": [
+                {
+                    "id": 123,
+                    "title": "你好新朋友，感谢使用 layuiAdmin",
+                    "username": "1111",
+                    "ip":"127.0.0.1",
+                    "status":1,
+                    "time": 1510363800000
+                }, 
+                {
+                    "id": 111,
+                    "title": "贤心发来了一段私信",
+                    "username":"22222",
+                    "ip":"127.0.0.1",
+                    "status":2,
+                    "time": 1510212370000
+                }
+            ]
+        }';
+        echo $msg;
+    }
+
 
 
 

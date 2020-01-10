@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/layui/css/admin.css" media="all">
-    <link rel="stylesheet" href="/layui/css/template.css" media="all">
     <style>
         .add-img{
             text-align:center;
@@ -40,10 +39,11 @@
         <div class="layui-col-md2 layui-col-sm4 slide_item" data-id="<?=$v["id"]?>">
             <div class="cmdlist-container">
 				<div href="javascript:;" class="layui-col-lg12" style="text-align:center">
-                    <img src="<?=$this->SITE["front_url"]?>/uploads/banner/<?=$v["id"]?>.jpg" width="100%" height="100px">
+                    <img src="<?=$this->SITE["front_url"]?>/uploads/factory/<?=$v["id"]?>.jpg" width="100%" height="150px">
                 </div>
                 <p style="text-align:center">顺序：<a class="set-sort" href="javascript:;" data-sort="<?=$v["sort"]?>"><?=$v["sort"]?></a></p>
-                <p style="text-align:center">链接：<a class="set-url" href="javascript:;" data-url="<?php if($v["url"]){echo $v["url"];}else{echo "0";}?>"><?php if($v["url"]){echo $v["url"];}else{echo "不跳转";}?></a></p>
+                <p style="text-align:center">中文：<a class="set-title" href="javascript:;" data-title="<?=$v["title"]?>"><?=$v["title"]?></a></p>
+                <p style="text-align:center">英文：<a class="set-en-title" href="javascript:;" data-en-title="<?=$v["en_title"]?>"><?=$v["en_title"]?></a></p>
 			</div>
             <div class="del-btn">
                 <a href="javascript:;"><i class="layui-icon layui-icon-close"></i></a>
@@ -54,7 +54,7 @@
         <div class="layui-col-md2 layui-col-sm4 add-slide">
             <div class="cmdlist-container">
 				<a href="javascript:;" class="layui-col-lg12 add-img">
-                    <img src="/images/add.jpg" width="100%" height="100px">
+                    <img src="/images/add.jpg" width="100%" height="150px">
                 </a>
 				<a href="javascript:;">
                     <p style="text-align:center">点击添加图片</p>
@@ -82,7 +82,7 @@
             }else{
                 $.ajax({
                     method: "POST",
-                    url: "/ajax/set_slide_sort",
+                    url: "/ajax/set_factory_sort",
                     data:{id: id, sort: value},
                     success: function(data){
                         if(data == 1){
@@ -102,22 +102,57 @@
         });
     });
 
-    //设置链接
-    $(".set-url").click(function(){
-        var id = $(this).parents(".slide_item").attr("data-id")
-        var url = $(this).attr("data-url")
+    //设置名称
+    $(".set-title").click(function(){
+        var obj = $(this)
+        var id = obj.parents(".slide_item").attr("data-id")
+        var title = obj.attr("data-title")
+        
         
         layer.prompt({
-            value: url,
-            title: '请以http://或者https://开头。若不跳转请填写0',
+            value: title,
+            title: '名称（中文）',
         }, function(value, index, elem){
             $.ajax({
                 method: "POST",
-                url: "/ajax/set_slide_url",
-                data:{id: id, url: value},
+                url: "/ajax/set_factory_title",
+                data:{id: id, type:1, title: value},
                 success: function(data){
                     if(data == 1){
-                        success_tip(index)
+                        obj.text(value)
+                        obj.attr("data-title", value)
+                        layer.close(index)
+                    }else{
+                        error_tip("修改失败，请刷新后重试", index)
+                    }
+                },
+                error: function(){
+                    error_tip("系统错误，请刷新后重试", index)
+                }
+            });
+        });
+    });
+
+    //设置名称
+    $(".set-en-title").click(function(){
+        var obj = $(this)
+        var id = obj.parents(".slide_item").attr("data-id")
+        var title = obj.attr("data-title")
+        
+        
+        layer.prompt({
+            value: title,
+            title: '名称（英文）',
+        }, function(value, index, elem){
+            $.ajax({
+                method: "POST",
+                url: "/ajax/set_factory_title",
+                data:{id: id, type:2, title: value},
+                success: function(data){
+                    if(data == 1){
+                        obj.text(value)
+                        obj.attr("data-title", value)
+                        layer.close(index)
                     }else{
                         error_tip("修改失败，请刷新后重试", index)
                     }
@@ -139,7 +174,7 @@
             var id = obj.parents(".slide_item").attr("data-id")
             $.ajax({
                 method: "POST",
-                url: "/ajax/del_slide",
+                url: "/ajax/del_factory",
                 data:{id: id},
                 success: function(data){
                     if(data == 1){
@@ -170,7 +205,7 @@
 
 		$.ajax({
 			method: "POST",
-			url: "/ajax/add_slide",
+			url: "/ajax/add_factory",
 			processData: false,
 			contentType: false,
 			data:data,
