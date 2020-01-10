@@ -869,6 +869,64 @@ class Ajax extends CI_Controller {
         echo count($query);
     }
 
+    public function set_user(){
+        $username = htmlentities(strtolower(trim($this->input->post("username"))), ENT_QUOTES, 'UTF-8');
+		$password = htmlentities(trim($this->input->post("password")), ENT_QUOTES, 'UTF-8');
+        $repassword = htmlentities(trim($this->input->post("repassword")), ENT_QUOTES, 'UTF-8');
+
+        if(!$username && !$password){
+            echo "请填写新用户名或新密码！";
+            exit;
+        }
+        
+        if($password && !$repassword){
+            echo "请填写重复密码！";
+            exit;
+        }
+        
+        if($username && strlen($username) < 3){
+            echo "用户名要超过3个字符！";
+            exit;
+        }
+
+        if($password && strlen($password) < 8){
+            echo "密码要超过8个字符！";
+            exit;
+        }
+
+        if($password != $repassword){
+            echo "两次密码不一致！";
+            exit;
+        }
+
+        $item = "";
+
+        if($username){
+            $item .= "`username`='{$username}'";
+        }
+
+        if($password){
+            if($item){
+                $item .= ",";
+            }
+
+            $sql = "SELECT `salt` FROM `admin`";
+            $salt = $this->db->query($sql)->row_array()["salt"];
+            $en_pwd = pwdEncrypt($password, $salt);
+            $item .= "`password`='{$en_pwd}'";
+        }
+        
+        $sql = "UPDATE `admin` SET {$item}";
+        $query = $this->db->query($sql);
+        if($query){
+            SESSION_START();
+            SESSION_DESTROY();
+            echo 1;
+        }else{
+            echo "系统错误，请刷新后重试！";
+        }
+    }
+
 
 
 
