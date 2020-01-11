@@ -1,3 +1,24 @@
+<?php
+    if($this->LAN == "cn"){
+        $id = 0;
+        $title = "name";
+    }else{
+        $id = 1;
+        $title = "title";
+    }
+    //网站信息
+    $sql = "SELECT sitename,tel,email,fax,addr FROM site_info WHERE id={$id}";
+    $info = $this->db->query($sql)->row_array();
+
+    //产品分类
+    $sql = "SELECT id,{$title} as `title` FROM product_classify ORDER BY id ASC";
+    $product_classify = $this->db->query($sql)->result_array();
+
+    //新闻分类
+    $sql = "SELECT id,{$title} as `title` FROM news_classify ORDER BY id ASC";
+    $news_classify = $this->db->query($sql)->result_array();
+?>
+
 <!--网站由Hsc个人设计及开发，如果您有任何意见或建议请联系QQ:390798960-->
 <header>
     <div class="container">
@@ -22,7 +43,7 @@
                 <div class="top_tel">
                     <img src="/images/tel.png">
                     <span><?=CONFIG($this->LAN)["service_tel"]?>：</span>
-                    <p>0752-6988698</p>
+                    <p><?=$info["tel"]?></p>
                 </div>
             </div>
         </div>
@@ -62,10 +83,9 @@
                             <span class="glyphicon glyphicon-menu-down btn-xs"></span>
                         </a>
                         <ul class='dropdown-menu nav_small' role='menu'>
-                            <li><a href="/home/products?type=1"><?=CONFIG($this->LAN)["title_3_1"]?></a></li>
-                            <li><a href="/home/products?type=2"><?=CONFIG($this->LAN)["title_3_2"]?></a></li>
-                            <li><a href="/home/products?type=3"><?=CONFIG($this->LAN)["title_3_3"]?></a></li>
-                            <li><a href="/home/products?type=4"><?=CONFIG($this->LAN)["title_3_4"]?></a></li>
+                            <?php foreach($product_classify as $k => $v):?>
+                            <li><a href="/home/products?type=<?=$v["id"]?>"><?=$v["title"]?></a></li>
+                            <?php endforeach;?>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -74,9 +94,9 @@
                             <span class="glyphicon glyphicon-menu-down btn-xs"></span>
                         </a>
                         <ul class='dropdown-menu nav_small' role='menu'>
-                            <li><a href="/home/news?type=1"><?=CONFIG($this->LAN)["title_4_1"]?></a></li>
-                            <li><a href="/home/news?type=2"><?=CONFIG($this->LAN)["title_4_2"]?></a></li>
-                            <li><a href="/home/news?type=3"><?=CONFIG($this->LAN)["title_4_3"]?></a></li>
+                            <?php foreach($news_classify as $k => $v):?>
+                            <li><a href="/home/products?type=<?=$v["id"]?>"><?=$v["title"]?></a></li>
+                            <?php endforeach;?>
                         </ul>
                     </li>
                     <li>

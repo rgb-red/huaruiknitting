@@ -22,18 +22,13 @@
 	<!-- 轮播图 -->
 	<div class="flash">
 		<ul class="bxslider">
+			<?php foreach($banner as $v):?>
 			<li>
-				<a href="javascript:;" target="_blank">
-					<img src="/uploads/banner/1.jpg" /></a>
+				<a href="<?php if($v["url"]){echo $v["url"];}else{echo "javascript:;";}?>" target="_blank">
+					<img src="/uploads/banner/<?=$v["id"]?>.jpg" />
+				</a>
 			</li>
-			<li>
-				<a href="javascript:;" target="_blank">
-					<img src="/uploads/banner/2.jpg" /></a>
-			</li>
-			<li>
-				<a href="javascript:;" target="_blank">
-					<img src="/uploads/banner/3.jpg" /></a>
-			</li>
+			<?php endforeach;?>
 		</ul>
 	</div>
 	<script type="text/javascript">
@@ -52,54 +47,16 @@
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-12">
 				<div class="product_list">
+					<?php foreach($product as $v):?>
 					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="网布内衣">
-							<img src="/uploads/product/1.jpg" alt="网布内衣" class="img-thumbnail" />
+						<a href="/home/product_info?id=<?=$v["id"]?>" title="<?=$v["title"]?>">
+							<img src="/uploads/cover/<?=$v["id"]?>.jpg" alt="<?=$v["title"]?>" class="img-thumbnail" />
 						</a>
 						<p class="product_title">
-							<a href="javascript:;" title="网布内衣">网布内衣</a>
+							<a href="/home/product_info?id=<?=$v["id"]?>" title="<?=$v["title"]?>"><?=$v["title"]?></a>
 						</p>
 					</div>
-					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="透气网孔内裤">
-							<img src="/uploads/product/2.jpg" alt="透气网孔内裤" class="img-thumbnail" />
-						</a>
-						<p class="product_title">
-							<a href="/home/product_info" title="透气网孔内裤">透气网孔内裤</a>
-						</p>
-					</div>
-					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="女士泳衣">
-							<img src="/uploads/product/3.jpg" alt="女士泳衣" class="img-thumbnail" />
-						</a>
-						<p class="product_title">
-							<a href="/home/product_info" title="女士泳衣">女士泳衣</a>
-						</p>
-					</div>
-					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="运动衣">
-							<img src="/uploads/product/4.jpg" alt="运动衣" class="img-thumbnail" />
-						</a>
-						<p class="product_title">
-							<a href="/home/product_info" title="运动衣">运动衣</a>
-						</p>
-					</div>
-					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="瑜伽服">
-							<img src="/uploads/product/5.jpg" alt="瑜伽服" class="img-thumbnail" />
-						</a>
-						<p class="product_title">
-							<a href="/home/product_info" title="瑜伽服">瑜伽服</a>
-						</p>
-					</div>
-					<div class="col-sm-4 col-md-4 col-mm-6 product_img" data-move-y="50px">
-						<a href="/home/product_info" title="儿童泳衣">
-							<img src="/uploads/product/6.jpg" alt="儿童泳衣" class="img-thumbnail" />
-						</a>
-						<p class="product_title">
-							<a href="/home/product_info" title="儿童泳衣">儿童泳衣</a>
-						</p>
-					</div>
+					<?php endforeach;?>
 				</div>
 			</div>
 		</div>
@@ -116,7 +73,7 @@
 						<div class="about_content">
 							<p>
 								<span style="line-height:3;">
-									<?=CONFIG($this->LAN)["index_about"]?>
+									<?=$about?>
 								</span>
 							</p>
 							<p>
@@ -143,33 +100,17 @@
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-12">
 					<div class="news_list">
+						<?php foreach($news as $k => $v):?>
 						<div class="col-sm-4 col-md-4 news_img" data-move-y="50px">
-							<a href="/home/news_detail" title="为生活提供更舒适、更健康、更美的产品">
-								<img src="/uploads/news/1.jpg" alt="为生活提供更舒适、更健康、更美的产品" class="opacity_img">
+							<a href="/home/news_detail?id=<?=$v["id"]?>" title="<?=$v["title"]?>">
+								<img src="/uploads/p_cover/<?=$v["id"]?>.jpg" alt="<?=$v["title"]?>" class="opacity_img">
 							</a>
-							<p class="news_title">
-								<a href="/home/news_detail" title="为生活提供更舒适、更健康、更美的产品">为生活提供更舒适、更健康、更美的产品</a>
+							<p class="news_title" style="text-align:center">
+								<a href="/home/news_detail?id=<?=$v["id"]?>" title="<?=$v["title"]?>"><?=$v["title"]?></a>
 							</p>
-							<p class="news_desc">“勇于实践，不断创新，客户满意，信誉第一”是“华瑞公司”不懈的追求。华瑞针织能满足不同客户要求，能确保在客户规定的时间内完成...</p>
+							<p class="news_desc"><?=$v["brief"]?></p>
 						</div>
-						<div class="col-sm-4 col-md-4 news_img" data-move-y="50px">
-							<a href="/home/news_detail" title="华瑞是一个富有激情和理想的团队">
-								<img src="/uploads/news/2.jpg" alt="华瑞是一个富有激情和理想的团队" class="opacity_img">
-							</a>
-							<p class="news_title">
-								<a href="/home/news_detail" title="华瑞是一个富有激情和理想的团队">华瑞是一个富有激情和理想的团队</a>
-							</p>
-							<p class="news_desc">华瑞是一个富有激情和理想的团队，充满着追求创新的进取精神，在中国染整行业的发展道路上，华瑞扮演着极其重要的角色。“用心感悟...</p>
-						</div>
-						<div class="col-sm-4 col-md-4 news_img" data-move-y="50px">
-							<a href="/home/news_detail" title="华瑞针织实业有限公司">
-								<img src="/uploads/news/3.jpg" alt="华瑞针织实业有限公司" class="opacity_img">
-							</a>
-							<p class="news_title">
-								<a href="/home/news_detail" title="华瑞针织实业有限公司">华瑞针织实业有限公司</a>
-							</p>
-							<p class="news_desc">博罗县华瑞针织实业有限公司创办于1995年，前身是汕头市金晨织造有限公司，公司一关以竭诚服务，努力为用户创造价值为宗旨，凭借出...</p>
-						</div>
+						<?php endforeach;?>
 					</div>
 				</div>
 			</div>

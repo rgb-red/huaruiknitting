@@ -128,8 +128,8 @@ class Ajax extends CI_Controller {
     //修改分类信息
     public function set_product_classify(){
         $id = $this->input->post("id");
-        $data["name"] = $this->input->post("name");
-        $data["title"] = $this->input->post("title");
+        $data["name"] = htmlspecialchars($this->input->post("name"), ENT_QUOTES);;
+        $data["title"] = htmlspecialchars($this->input->post("title"), ENT_QUOTES);;
         $data["sort"] = $this->input->post("sort");
         
         $item = sql_update_merge_item($data);
@@ -159,8 +159,8 @@ class Ajax extends CI_Controller {
 
     //新增分类信息
     public function add_product_classify(){
-        $name = $this->input->post("name");
-        $title = $this->input->post("title");
+        $name = htmlspecialchars($this->input->post("name"), ENT_QUOTES);;
+        $title = htmlspecialchars($this->input->post("title"), ENT_QUOTES);;
         $sort = $this->input->post("sort");
         
         $sql = "INSERT INTO product_classify (`title`, `name`, `sort`) VALUES ('{$title}','{$name}','{$sort}')";
@@ -238,8 +238,8 @@ class Ajax extends CI_Controller {
         }
 
         //接受其他参数
-        $data["title"] = $this->input->post("title");
-        $data["en_title"] = $this->input->post("en_title");
+        $data["title"] = htmlspecialchars($this->input->post("title"), ENT_QUOTES);;
+        $data["en_title"] = htmlspecialchars($this->input->post("en_title"), ENT_QUOTES);;
         $data["number"] = $this->input->post("number");
         $data["classify"] = $this->input->post("product_classify");
         $data["brief"] = htmlspecialchars($this->input->post("brief"), ENT_QUOTES);
@@ -253,8 +253,8 @@ class Ajax extends CI_Controller {
 
         //处理简介
         if(!$data["brief"]){
-            if(mb_strlen($textarea_text) >= 25){
-                $data["brief"] = mb_substr($textarea_text, 0, 25) . "...";
+            if(mb_strlen($textarea_text) >= 50){
+                $data["brief"] = mb_substr(trim($textarea_text), 0, 50) . "...";
             }else{
                 $data["brief"] = $textarea_text;
             }
@@ -262,7 +262,7 @@ class Ajax extends CI_Controller {
 
         if(!$data["en_brief"]){
             if(mb_strlen($en_textarea_text) >= 50){
-                $data["en_brief"] = mb_substr($en_textarea_text, 0, 50) . "...";
+                $data["en_brief"] = mb_substr(trim($en_textarea_text), 0, 50) . "...";
             }else{
                 $data["en_brief"] = $en_textarea_text;
             }
@@ -519,8 +519,8 @@ class Ajax extends CI_Controller {
 
         //处理简介
         if(!$data["brief"]){
-            if(mb_strlen($textarea_text) >= 25){
-                $data["brief"] = mb_substr($textarea_text, 0, 25) . "...";
+            if(mb_strlen($textarea_text) >= 50){
+                $data["brief"] = mb_substr(trim($textarea_text), 0, 50) . "...";
             }else{
                 $data["brief"] = $textarea_text;
             }
@@ -528,7 +528,7 @@ class Ajax extends CI_Controller {
 
         if(!$data["en_brief"]){
             if(mb_strlen($en_textarea_text) >= 50){
-                $data["en_brief"] = mb_substr($en_textarea_text, 0, 50) . "...";
+                $data["en_brief"] = mb_substr(trim($en_textarea_text), 0, 50) . "...";
             }else{
                 $data["en_brief"] = $en_textarea_text;
             }
@@ -548,7 +548,7 @@ class Ajax extends CI_Controller {
     //新闻列表
     public function news_list(){
         $id = $this->input->get("id");
-		$title = $this->input->get("title");
+		$title =htmlspecialchars($this->input->post("title"), ENT_QUOTES);;
 		$classify = $this->input->get("classify");
         $time = $this->input->get("time");
         $status = $this->input->get("status");
@@ -645,6 +645,18 @@ class Ajax extends CI_Controller {
         }
 
         echo json_encode($res);
+    }
+
+    //删除产品
+    public function del_new(){
+        $id = $this->input->post("id");
+        $sql = "DELETE FROM news WHERE id={$id}";
+        $query = $this->db->query($sql);
+        if($query){
+            echo 1;
+        }else{
+            echo 0;
+        }
     }
 
     public function set_page(){

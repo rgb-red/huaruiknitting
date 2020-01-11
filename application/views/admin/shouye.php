@@ -23,7 +23,7 @@
                                             <li class="layui-col-xs3">
                                                 <a lay-href="/admin/info" target="_blank">
                                                     <i class="layui-icon layui-icon-website"></i>
-                                                    <cite>站点</cite>
+                                                    <cite>站点设置</cite>
                                                 </a>
                                             </li>
                                             <li class="layui-col-xs3">
@@ -32,27 +32,27 @@
                                                     <cite>轮播图</cite></a>
                                             </li>
                                             <li class="layui-col-xs3">
-                                                <a lay-href="component/layer/list.html">
+                                                <a lay-href="/admin/product_list">
                                                     <i class="layui-icon layui-icon-release"></i>
-                                                    <cite>产品展示</cite></a>
+                                                    <cite>产品列表</cite></a>
                                             </li>
                                             <li class="layui-col-xs3">
-                                                <a layadmin-event="im">
+                                                <a lay-href="/admin/edit_product">
                                                     <i class="layui-icon layui-icon-auz"></i>
                                                     <cite>发表产品</cite></a>
                                             </li>
                                             <li class="layui-col-xs3">
-                                                <a lay-href="component/progress/index.html">
+                                                <a lay-href="/admin/news">
                                                     <i class="layui-icon layui-icon-template-1"></i>
-                                                    <cite>发表新闻</cite></a>
+                                                    <cite>新闻列表</cite></a>
                                             </li>
                                             <li class="layui-col-xs3">
-                                                <a lay-href="app/workorder/list.html">
+                                                <a lay-href="/admin/contact">
                                                     <i class="layui-icon layui-icon-survey"></i>
-                                                    <cite>留言</cite></a>
+                                                    <cite>留言管理</cite></a>
                                             </li>
                                             <li class="layui-col-xs3">
-                                                <a lay-href="user/user/list.html">
+                                                <a lay-href="/admin/user">
                                                     <i class="layui-icon layui-icon-user"></i>
                                                     <cite>个人中心</cite></a>
                                             </li>

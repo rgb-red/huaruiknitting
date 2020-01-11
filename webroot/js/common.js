@@ -82,9 +82,9 @@ $(document).ready(function(){
         $.ajax({
           method: 'GET',
           url: "/home/language/" + language,
-          success: function (r) {
-              if(r == "success"){
-                location.reload();
+          success: function (data) {
+              if(data == "success"){
+                window.location.reload();
               }
           }
         });

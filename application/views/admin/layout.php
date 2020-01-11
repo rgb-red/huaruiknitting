@@ -111,15 +111,10 @@
                         </li>
                         <li data-name="product" class="layui-nav-item">
                             <a href="javascript:;" lay-tips="产品管理" lay-direction="2">
-                            <i class="layui-icon layui-icon-auz"></i>
+                                <i class="layui-icon layui-icon-auz"></i>
                                 <cite>产品管理</cite>
                                 <span class="layui-nav-more"></span>
                             </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="edit_product">
-                                    <a lay-href="/admin/edit_product">发布产品</a>
-                                </dd>
-                            </dl>
                             <dl class="layui-nav-child">
                                 <dd data-name="product_list">
                                     <a lay-href="/admin/product_list">产品列表</a>

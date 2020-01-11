@@ -19,10 +19,37 @@ class Home extends CI_Controller {
 		if(isset($_COOKIE["LAN"]) && $_COOKIE["LAN"] == "en"){
 			$this->LAN = "en";
 		}
+		
 	}
 
 	public function index(){
-		$this->load->view("index");
+		//轮播图
+		$sql = "SELECT * FROM slide ORDER BY sort ASC";
+		$data["banner"] = $this->db->query($sql)->result_array();
+
+		//产品推送
+		if($this->LAN == "cn"){
+			$title = "title";
+			$text = "text";
+			$brief = "brief";
+		}else{
+			$title = "en_title";
+			$text = "en_text";
+			$brief = "en_brief";
+		}
+
+		$sql = "SELECT id,{$title} as title FROM product WHERE push=2 ORDER BY id DESC";
+		$data["product"] = $this->db->query($sql)->result_array();
+
+		//关于我们
+		$sql = "SELECT {$text} as `text` FROM `page` WHERE `page`='about'";
+		$data["about"] = $this->db->query($sql)->row_array()["text"];
+
+		//新闻
+		$sql = "SELECT id,{$title} as `title`,{$brief} as `brief` FROM news WHERE cover=1 ORDER BY id DESC LIMIT 3";
+		$data["news"] = $this->db->query($sql)->result_array();
+
+		$this->load->view("index", $data);
 	}
 
 	public function profile(){
@@ -116,7 +143,7 @@ class Home extends CI_Controller {
 		}
 
 		setcookie('LAN', $item, time() + 86400, '/');
-
+		
 		echo "success";
 	}
 }
