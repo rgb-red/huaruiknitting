@@ -42,9 +42,6 @@ CREATE TABLE `admin` (
 -- 转存表中的数据 `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `salt`, `nickname`, `logins`, `last_login`) VALUES
-(0, 'admin', 'dc4365de755522ea963640d64c2b7178', '08aM', '管理员', '0', '0');
-
 -- --------------------------------------------------------
 
 --
