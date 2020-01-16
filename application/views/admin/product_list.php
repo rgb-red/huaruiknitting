@@ -179,7 +179,7 @@
         var order = $(".order").val() ? $(".order").val() : "1";
         var by = $(".by").val() ? $(".by").val() : "1";
 
-        var table = layui.table;
+        table = layui.table;
         table.render({
             elem: '#main',
             url: '/ajax/product_list?id=' + id + "&number=" + number + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&push=" + push + "&order=" + order + "&by=" + by,
@@ -212,14 +212,14 @@
 
     //编辑产品
     function edit_product(id){
-        layer.open({
+        i = layer.open({
             type: 2,
             shadeClose: true,
             shade: 0.8,
             area: ['90%', '90%'],
             content: '/admin/edit_product?id=' + id,
             cancel: function(){
-                window.location.reload()
+                reload_table();
             }
         });
     }
@@ -304,7 +304,9 @@
                 }
                 else if(data == 1){
                     layer.alert('推送成功', function(index){
-                        window.location.reload()
+                        layer.close(load_layer)
+                        layer.close(index)
+                        reload_table();
                     });
                 }
                 else{
@@ -326,7 +328,9 @@
             success: function(data){
                 if(data == 1){
                     layer.alert('取消推送成功', function(index){
-                        window.location.reload()
+                        layer.close(load_layer)
+                        layer.close(index)
+                        reload_table();
                     });
                 }
                 else{
@@ -337,6 +341,10 @@
                 error_tip("系统错误，请刷新后重试", load_layer)
             }
         });
+    }
+
+    function reload_table(){
+        table.reload("main");
     }
 </script>
 </html>

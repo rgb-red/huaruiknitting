@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="bread_nav">
-                        <span>您的位置：</span>
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                         <a href='/'>主页</a>>
                         <a href='javascript:;'>搜索</a>>
                         <a href='javascript:;'>花边</a>

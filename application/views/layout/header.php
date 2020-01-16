@@ -1,24 +1,3 @@
-<?php
-    if($this->LAN == "cn"){
-        $id = 0;
-        $title = "name";
-    }else{
-        $id = 1;
-        $title = "title";
-    }
-    //网站信息
-    $sql = "SELECT sitename,tel,email,fax,addr FROM site_info WHERE id={$id}";
-    $info = $this->db->query($sql)->row_array();
-
-    //产品分类
-    $sql = "SELECT id,{$title} as `title` FROM product_classify ORDER BY id ASC";
-    $product_classify = $this->db->query($sql)->result_array();
-
-    //新闻分类
-    $sql = "SELECT id,{$title} as `title` FROM news_classify ORDER BY id ASC";
-    $news_classify = $this->db->query($sql)->result_array();
-?>
-
 <!--网站由Hsc个人设计及开发，如果您有任何意见或建议请联系QQ:390798960-->
 <header>
     <div class="container">
@@ -43,7 +22,7 @@
                 <div class="top_tel">
                     <img src="/images/tel.png">
                     <span><?=CONFIG($this->LAN)["service_tel"]?>：</span>
-                    <p><?=$info["tel"]?></p>
+                    <p><?=$this->SITE["tel"]?></p>
                 </div>
             </div>
         </div>
@@ -63,10 +42,10 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a class='active' href="/"><?=CONFIG($this->LAN)["title_1"]?></a>
+                        <a <?php if($page == 0):?>class='active'<?php endif;?> href="/"><?=CONFIG($this->LAN)["title_1"]?></a>
                     </li>
                     <li class="dropdown">
-                        <a href="/home/profile" class=''><?=CONFIG($this->LAN)["title_2"]?></a>
+                        <a <?php if($page == 1):?>class='active'<?php endif;?> href="/home/profile" class=''><?=CONFIG($this->LAN)["title_2"]?></a>
                         <a href="/home/profile" id="app_menudown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <span class="glyphicon glyphicon-menu-down btn-xs"></span>
                         </a>
@@ -78,35 +57,35 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="/home/products" class=''><?=CONFIG($this->LAN)["title_3"]?></a>
+                        <a <?php if($page == 2):?>class='active'<?php endif;?> href="/home/products" class=''><?=CONFIG($this->LAN)["title_3"]?></a>
                         <a href="/home/products" id="app_menudown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <span class="glyphicon glyphicon-menu-down btn-xs"></span>
                         </a>
                         <ul class='dropdown-menu nav_small' role='menu'>
-                            <?php foreach($product_classify as $k => $v):?>
-                            <li><a href="/home/products?type=<?=$v["id"]?>"><?=$v["title"]?></a></li>
+                            <?php foreach($this->PRO as $v):?>
+                            <li><a href="/home/products?cat=<?=$v["id"]?>"><?=$v["title"]?></a></li>
                             <?php endforeach;?>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="/home/news" class=''><?=CONFIG($this->LAN)["title_4"]?></a>
+                        <a <?php if($page == 3):?>class='active'<?php endif;?> href="/home/news" class=''><?=CONFIG($this->LAN)["title_4"]?></a>
                         <a href="/home/news" id="app_menudown" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             <span class="glyphicon glyphicon-menu-down btn-xs"></span>
                         </a>
                         <ul class='dropdown-menu nav_small' role='menu'>
-                            <?php foreach($news_classify as $k => $v):?>
-                            <li><a href="/home/products?type=<?=$v["id"]?>"><?=$v["title"]?></a></li>
+                            <?php foreach($this->NEW as $v):?>
+                            <li><a href="/home/news?cat=<?=$v["id"]?>"><?=$v["title"]?></a></li>
                             <?php endforeach;?>
                         </ul>
                     </li>
                     <li>
-                        <a href="/home/honor" class=""><?=CONFIG($this->LAN)["title_5"]?></a>
+                        <a <?php if($page == 4):?>class='active'<?php endif;?> href="/home/honor" class=""><?=CONFIG($this->LAN)["title_5"]?></a>
                     </li>
                     <li>
-                        <a href="/home/message" class=""><?=CONFIG($this->LAN)["title_6"]?></a>
+                        <a <?php if($page == 5):?>class='active'<?php endif;?> href="/home/message" class=""><?=CONFIG($this->LAN)["title_6"]?></a>
                     </li>
                     <li>
-                        <a href="/home/contact" class=""><?=CONFIG($this->LAN)["title_7"]?></a>
+                        <a <?php if($page == 6):?>class='active'<?php endif;?> href="/home/contact" class=""><?=CONFIG($this->LAN)["title_7"]?></a>
                     </li>
                     <li class="dropdown">
                         <a href="javascript:;" class=''><?=CONFIG($this->LAN)["title_8"]?></a>

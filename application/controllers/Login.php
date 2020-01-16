@@ -77,17 +77,17 @@ class Login extends ADMIN_Controller {
     }
     
     //生成后台管理员账户
-    public function create_admin(){
-        $username = "admin";
-        $salt = cteateSalt();
-        $password = pwdEncrypt("123456", $salt);
-        $nickname = "管理员";
-        $logins = 0;
-        $last_login = 0;
+    // public function create_admin(){
+    //     $username = "admin";
+    //     $salt = cteateSalt();
+    //     $password = pwdEncrypt("123456", $salt);
+    //     $nickname = "管理员";
+    //     $logins = 0;
+    //     $last_login = 0;
 
-        $sql = "INSERT INTO admin (`id`,`username`,`salt`,`password`,`nickname`,`logins`,`last_login`) VALUES (0,'{$username}','{$salt}','{$password}','{$nickname}',{$logins},{$last_login})";
-        $this->db->query($sql);
-    }
+    //     $sql = "INSERT INTO admin (`id`,`username`,`salt`,`password`,`nickname`,`logins`,`last_login`) VALUES (0,'{$username}','{$salt}','{$password}','{$nickname}',{$logins},{$last_login})";
+    //     $this->db->query($sql);
+    // }
 
 	//获取验证码及图片
 	public function get_verify_code(){

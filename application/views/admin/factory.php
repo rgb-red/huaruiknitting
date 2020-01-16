@@ -42,8 +42,8 @@
                     <img src="<?=$this->SITE["front_url"]?>/uploads/factory/<?=$v["id"]?>.jpg" width="100%" height="150px">
                 </div>
                 <p style="text-align:center">顺序：<a class="set-sort" href="javascript:;" data-sort="<?=$v["sort"]?>"><?=$v["sort"]?></a></p>
-                <p style="text-align:center">中文：<a class="set-title" href="javascript:;" data-title="<?=$v["title"]?>"><?=$v["title"]?></a></p>
-                <p style="text-align:center">英文：<a class="set-en-title" href="javascript:;" data-en-title="<?=$v["en_title"]?>"><?=$v["en_title"]?></a></p>
+                <p style="text-align:center">中文：<a class="set-title" href="javascript:;" data-title="<?=$v["title"]?>"><?php if($v["title"]){echo $v["title"];}else{echo "未设置";}?></a></p>
+                <p style="text-align:center">英文：<a class="set-en-title" href="javascript:;" data-en-title="<?=$v["en_title"]?>"><?php if($v["en_title"]){echo $v["en_title"];}else{echo "未设置";}?></a></p>
 			</div>
             <div class="del-btn">
                 <a href="javascript:;"><i class="layui-icon layui-icon-close"></i></a>

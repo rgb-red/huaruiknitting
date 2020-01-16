@@ -5,6 +5,12 @@ class Ajax extends CI_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->config("config_language");
+
+        SESSION_START();
+        if(!isset($_SESSION["username"])){
+            echo "尚未登陆";
+            exit;
+        }
     }
 
     //logo上传
@@ -519,16 +525,16 @@ class Ajax extends CI_Controller {
 
         //处理简介
         if(!$data["brief"]){
-            if(mb_strlen($textarea_text) >= 50){
-                $data["brief"] = mb_substr(trim($textarea_text), 0, 50) . "...";
+            if(mb_strlen($textarea_text) >= 80){
+                $data["brief"] = mb_substr(trim($textarea_text), 0, 80) . "...";
             }else{
                 $data["brief"] = $textarea_text;
             }
         }
 
         if(!$data["en_brief"]){
-            if(mb_strlen($en_textarea_text) >= 50){
-                $data["en_brief"] = mb_substr(trim($en_textarea_text), 0, 50) . "...";
+            if(mb_strlen($en_textarea_text) >= 120){
+                $data["en_brief"] = mb_substr(trim($en_textarea_text), 0, 120) . "...";
             }else{
                 $data["en_brief"] = $en_textarea_text;
             }

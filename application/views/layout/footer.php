@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="mfoot_nav">
-        <a href="tel:0752-6988698">
+        <a href="tel:<?=$this->SITE["tel"]?>">
             <span class="glyphicon glyphicon-phone btn-lg" aria-hidden="true"></span><?=CONFIG($this->LAN)["tel"]?>
         </a>
     </div>
@@ -48,10 +48,11 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-5 col-md-5 footer_contact">
-                <h4 style="color:#CC0E17"><?=CONFIG($this->LAN)["site_name"]?></h4>
-                <p><?=CONFIG($this->LAN)["tel"]?>：0752-6988698</p>
-                <p><?=CONFIG($this->LAN)["fax"]?>：0752-6988698</p>
-                <p><?=CONFIG($this->LAN)["email"]?>：<?=CONFIG($this->LAN)["address"]?></p>
+                <h4 style="color:#CC0E17"><?=$this->SITE["sitename"]?></h4>
+                <p><?=CONFIG($this->LAN)["tel"]?>：<?=$this->SITE["tel"]?></p>
+                <p><?=CONFIG($this->LAN)["fax"]?>：<?=$this->SITE["fax"]?></p>
+                <p><?=CONFIG($this->LAN)["email"]?>：<?=$this->SITE["email"]?></p>
+                <p><?=CONFIG($this->LAN)["address"]?>：<?=$this->SITE["addr"]?></p>
             </div>
             <div class="col-xs-12 col-sm-7 col-md-7">
                 <div class="col-xs-6 col-md-3 footer_menu">
@@ -63,16 +64,15 @@
                 </div>
                 <div class="col-xs-6 col-md-3 footer_menu">
                     <p class="footer_menu_first"><a href="javascript:;"><?=CONFIG($this->LAN)["title_3"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_3_1"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_3_2"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_3_3"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_3_4"]?></a></p>
+                    <?php foreach($this->PRO as $v):?>
+                    <p><a href="/home/products?type=<?=$v["id"]?>"><?=$v["title"]?></a></p>
+                    <?php endforeach;?>
                 </div>
                 <div class="col-xs-6 col-md-3 footer_menu">
                     <p class="footer_menu_first"><a href="javascript:;"><?=CONFIG($this->LAN)["title_4"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_4_1"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_4_2"]?></a></p>
-                    <p><a href="javascript:;"><?=CONFIG($this->LAN)["title_4_3"]?></a></p>
+                    <?php foreach($this->NEW as $v):?>
+                    <p><a href="/home/news?type=<?=$v["id"]?>"><?=$v["title"]?></a></p>
+                    <?php endforeach;?>
                 </div>
                 <div class="col-xs-6 col-md-3 footer_menu">
                     <p class="footer_menu_first"><a href="javascript:;"><?=CONFIG($this->LAN)["title_7"]?></a></p>
@@ -83,11 +83,9 @@
         </div>
     </div>
 </footer>
-<div class="copy">Copyright &copy; 1995-<?=date("Y")?> <?=CONFIG($this->LAN)["site_name"]?>
-    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow">粤ICP备12040972号</a>
-    <a href="http://wljg.gdgs.gov.cn/corpsrch.aspx?key=441322000003556" target="_blank" title="企业名称：<?=CONFIG($this->LAN)["site_name"]?>
-法定代表人：郑兴烈
-标识状态：已激活 粤工商备P131706004138">
+<div class="copy">Copyright &copy; 1995-<?=date("Y")?> <?=$this->SITE["sitename"]?>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow"><?=$this->SITE["site_record"]?></a>
+    <a href="http://wljg.gdgs.gov.cn/corpsrch.aspx?key=<?=$this->SITE["company_info"]?>" target="_blank">
         <img src="http://wljg.gdgs.gov.cn/upload/image/20141126/20141126002933.png" alt="" style="height:38px;border:0;">
     </a>
 </div>

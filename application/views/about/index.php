@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><?=$info["title"]?> - <?=CONFIG($this->LAN)["site_name"]?></title>
+    <title><?=$info["title"]?> - <?=$this->SITE["sitename"]?></title>
     <meta name="keywords" content="<?=$info["keywords"]?>" />
     <meta name="description" content="<?=$info["description"]?>" />
     <meta name="applicable-device" content="pc,mobile" />
@@ -17,7 +17,7 @@
     <script src="/js/bootstrap.js"></script>
 </head>
 <body>
-    <?php $this->load->view("layout/header")?>
+    <?php $this->load->view("layout/header", ["page" => 1])?>
     <div class="page_bg" style="background: url(/images/detail_bg.jpg) center top no-repeat;"></div>
     <div class="bread_bg">
         <div class="container">
@@ -25,7 +25,8 @@
                 <div class="col-xs-12 col-sm-12 col-md-12">
                     <div class="bread_nav">
                         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-                        <a href='/'><?=CONFIG($this->LAN)["home"]?></a>>
+                        <a href='/'><?=CONFIG($this->LAN)["home"]?></a> > 
+                        <a href='javascript:;'><?=CONFIG($this->LAN)["title_2"]?></a> > 
                         <a href='javascript:;'><?=$info["title"]?></a>
                     </div>
                 </div>
@@ -46,7 +47,11 @@
                         <span><?=$info["title"]?></span>
                     </h2>
                 </div>
-                <?php $this->load->view("about/" . $info["page"])?>
+                <?php if($info["sort"] == 4):?>
+                <?php $this->load->view("about/facility", ["sort" => 4, "factory" => $factory]);?>
+                <?php else:?>
+                <?=html_entity_decode($info["text"])?>
+                <?php endif;?>
             </div>
         </div>
     </div>

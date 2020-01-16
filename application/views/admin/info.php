@@ -95,6 +95,12 @@
 									</div>
 								</div>
 								<div class="layui-form-item">
+									<label class="layui-form-label">QQ</label>
+									<div class="layui-input-inline">
+										<input type="text" name="qq" value="<?=$info["qq"]?>" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-form-item">
 									<label class="layui-form-label">联系人</label>
 									<div class="layui-input-inline">
 										<input type="text" name="linkman" value="<?=$info["linkman"]?>" class="layui-input">

@@ -51,10 +51,10 @@
 										<select name="product_classify" lay-verify="required" class="product_classify">
 											<option value=""></option>
 											<?php foreach($classify as $v):?>
-											<?php if($id):?>
+											<?php if($v["id"] == $info["classify"]):?>
 											<option value="<?=$v["id"]?>" selected><?=$v["name"]?>(<?=$v["title"]?>)</option>
 											<?else:?>
-											<option value="<?=$v["id"]?>"><?=$v["name"]?>(<?=$v["title"]?>)</option>
+											<option value="<?=$v["id"] ?>"><?=$v["name"]?>(<?=$v["title"]?>)</option>
 											<?php endif;?>
 											<?php endforeach;?>
 										</select>
@@ -236,7 +236,9 @@
 						});
 					}else{
 						layer.alert(msg2, function(){
-							window.location.href = "/admin/edit_product?id=" + data;
+							parent.reload_table();
+							parent.layer.closeAll();
+							//window.location.href = "/admin/edit_product?id=" + data;
 						})
 					}
 				},

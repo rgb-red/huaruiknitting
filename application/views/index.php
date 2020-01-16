@@ -4,9 +4,9 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title><?=CONFIG($this->LAN)["site_name"]?></title>
-	<meta name="description" content="<?=CONFIG($this->LAN)["description"]?>" />
-	<meta name="keywords" content="<?=CONFIG($this->LAN)["keywords"]?>" />
+	<title><?=$this->SITE["sitename"]?></title>
+	<meta name="description" content="<?=$this->SITE["description"]?>" />
+	<meta name="keywords" content="<?=$this->SITE["keywords"]?>" />
 	<meta name="author" content=Hsc_QQ:390798960" />
 	<meta name="applicable-device" content="pc,mobile" />
 	<link href="/css/bootstrap.css" rel="stylesheet" />
@@ -18,7 +18,7 @@
 	<script src="/js/bootstrap.js"></script>
 </head>
 <body>
-	<?php $this->load->view("layout/header")?>
+	<?php $this->load->view("layout/header", ["page" => 0])?>
 	<!-- 轮播图 -->
 	<div class="flash">
 		<ul class="bxslider">

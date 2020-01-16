@@ -1,9 +1,12 @@
+<h3 class="left_h3">
+    <span><?=CONFIG($this->LAN)["title_3"]?></span>
+</h3>
 <div class="left_column">
     <ul class="left_nav_ul" id="firstpane">
-        <li><a href="javascript:;" class="biglink <?php if($sort == 1):?>left_active<?php endif;?>">保暖衣系列</a></li>
-        <li><a href="javascript:;" class="biglink <?php if($sort == 2):?>left_active<?php endif;?>">内衣系列</a></li>
-        <li><a href="javascript:;" class="biglink <?php if($sort == 3):?>left_active<?php endif;?>">泳衣系列</a></li>
-        <li><a href="javascript:;" class="biglink <?php if($sort == 4):?>left_active<?php endif;?>">运动系列</a></li>
+        <li><a href="/home/products?cat=0" class="biglink <?php if($classify["num"] == 0):?>left_active<?php endif;?>"><?=$this->LAN == "cn" ? "全部" : "All"?></a></li>
+        <?php foreach($classify["data"] as $v):?>
+        <li><a href="/home/products?cat=<?=$v["id"]?>" class="biglink <?php if($v["id"] == $classify["num"]):?>left_active<?php endif;?>"><?=$v["title"]?></a></li>
+        <?php endforeach;?>
         <ul class="left_snav_ul menu_body"></ul>
     </ul>
 </div>

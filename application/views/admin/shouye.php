@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -170,4 +170,4 @@
     <script src="/layui/js/layui.js"></script>
     <script>layui.config({base: '/layui/js/'}).extend({index: 'lib/index'}).use(['index', 'console']);</script>
 </body>
-</html>
+</html> -->

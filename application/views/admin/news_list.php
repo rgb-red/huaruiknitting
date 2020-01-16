@@ -154,7 +154,7 @@
         var order = $(".order").val() ? $(".order").val() : "1";
         var by = $(".by").val() ? $(".by").val() : "1";
 
-        var table = layui.table;
+        table = layui.table;
         table.render({
             elem: '#main',
             url: '/ajax/news_list?id=' + id + "&title=" + title + "&classify=" + classify + "&time=" + time + "&status=" + status + "&order=" + order + "&by=" + by,
@@ -192,7 +192,7 @@
             area: ['90%', '90%'],
             content: '/admin/edit_news?id=' + id,
             cancel: function(){
-                window.location.reload()
+                reload_table();
             }
         });
     }
@@ -263,6 +263,10 @@
 		layer.alert(msg, function(index){
 			layer.close(index);
 		});
-	}
+    }
+    
+    function reload_table(){
+        table.reload("main");
+    }
 </script>
 </html>

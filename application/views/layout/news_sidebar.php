@@ -1,17 +1,21 @@
+<?php
+    if($this->LAN == "cn"){
+        $title = "title";
+        $len = 15;
+    }else{
+        $title = "en_title";
+        $len = 30;
+    }
+    $sql = "SELECT id,{$title} as `title` FROM news ORDER BY id DESC LIMIT 5";
+    $news = $this->db->query($sql)->result_array();
+?>
 <div class="left_news">
     <h3 class="left_h3">
         <span><?=CONFIG($this->LAN)["title_4"]?></span>
     </h3>
     <ul class="left_news">
-        <li>
-            <a href="/home/news_detail" title="为生活提供更舒适、更健康、更美的产品">为生活提供更舒适、更健康、更美的...</a></li>
-        <li>
-            <a href="/home/news_detail" title="华瑞是一个富有激情和理想的团队">华瑞是一个富有激情和理想的团队</a></li>
-        <li>
-            <a href="/home/news_detail" title="华瑞针织实业有限公司">华瑞针织实业有限公司</a></li>
-        <li>
-            <a href="/home/news_detail" title="“勇于实践，不断创新，客户满意，信誉第一”">“勇于实践，不断创新，客户满意...</a></li>
-        <li>
-            <a href="/home/news_detail" title="移动时代，如何科学的运用品牌？">移动时代，如何科学的运用品牌？</a></li>
+        <?php foreach($news as $v):?>
+            <li><a href="/home/news_detail?id=<?=$v["id"]?>" title="<?=$v["title"]?>"><?=mb_strlen($v["title"]) >= $len ? mb_substr($v["title"], 0, $len) . "..." : $v["title"]?></a></li>
+        <?php endforeach;?>
     </ul>
 </div>
